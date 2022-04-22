@@ -50,7 +50,8 @@ internal class DefaultTransportFactory: TransportFactory {
         return chosen
     }
     
-    /// Sets the chosen type to have lowest priority for future reconnect attempts, to allow fallback when a transport does not work properly, e.g. due to network conditions.
+    /// Sets the chosen type to have lowest priority for future reconnect attempts, to allow fallback when a transport does not work properly, e.g. due to
+    /// network conditions.
     private func recordChoice(_ choice: TransportType?) {
         if let choice = choice {
             orderOfPreference.removeAll(where: { $0 == choice })
