@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Logging
 
 internal protocol ServerInvocationHandler {
     func createInvocationMessage(invocationId: String, method: String, arguments: [Encodable], streamIds: [String]?) -> HubMessage
@@ -25,37 +26,37 @@ internal class InvocationHandler<T: Decodable>: ServerInvocationHandler {
     }
 
     func createInvocationMessage(invocationId: String, method: String, arguments: [Encodable], streamIds: [String]?) -> HubMessage {
-        logger.log(logLevel: .debug, message: "Creating invocation message for method: '\(method)', invocationId: \(invocationId)")
+        logger.debug("Creating invocation message for method: '\(method)', invocationId: \(invocationId)")
         return ServerInvocationMessage(invocationId: invocationId, target: method, arguments: arguments, streamIds: streamIds)
     }
 
     func processStreamItem(streamItemMessage: StreamItemMessage) -> Error? {
-        logger.log(logLevel: .error, message: "Stream item message received for non-streaming server side method")
+        logger.error("Stream item message received for non-streaming server side method")
         return SignalRError.protocolViolation(underlyingError: SignalRError.invalidOperation(message: "Stream item message received for non-streaming server side method"))
     }
 
     func processCompletion(completionMessage: CompletionMessage) {
         let invocationId = completionMessage.invocationId
-        logger.log(logLevel: .debug, message: "Processing completion of method with invocationId: \(invocationId)")
+        logger.debug("Processing completion of method with invocationId: \(invocationId)")
 
         if let hubInvocationError = completionMessage.error {
-            logger.log(logLevel: .error, message: "Server method with invocationId \(invocationId) failed with: \(hubInvocationError)")
+            logger.error("Server method with invocationId \(invocationId) failed with: \(hubInvocationError)")
             invocationDidComplete(nil, SignalRError.hubInvocationError(message: hubInvocationError))
             return
         }
 
         if !completionMessage.hasResult {
-            logger.log(logLevel: .debug, message: "Void server method with invocationId \(invocationId) completed successfully")
+            logger.debug("Void server method with invocationId \(invocationId) completed successfully")
             invocationDidComplete(nil, nil)
             return
         }
 
         do {
-            logger.log(logLevel: .debug, message: "Server method with invocationId \(invocationId) completed successfully")
+            logger.debug("Server method with invocationId \(invocationId) completed successfully")
             let result = try completionMessage.getResult(T.self)
             invocationDidComplete(result, nil)
         } catch {
-            logger.log(logLevel: .error, message: "Error while getting result for server method with invocationId \(invocationId)")
+            logger.error("Error while getting result for server method with invocationId \(invocationId)")
             invocationDidComplete(nil, error)
         }
     }
@@ -77,19 +78,19 @@ internal class StreamInvocationHandler<T: Decodable>: ServerInvocationHandler {
     }
 
     func createInvocationMessage(invocationId: String, method: String, arguments: [Encodable], streamIds: [String]?) -> HubMessage {
-        logger.log(logLevel: .debug, message: "Creating invocation message for streaming method: '\(method)', invocationId: \(invocationId)")
+        logger.debug("Creating invocation message for streaming method: '\(method)', invocationId: \(invocationId)")
         return StreamInvocationMessage(invocationId: invocationId, target: method, arguments: arguments, streamIds: streamIds)
     }
 
     func processStreamItem(streamItemMessage: StreamItemMessage) -> Error? {
         let invocationId = streamItemMessage.invocationId
-        logger.log(logLevel: .debug, message: "Received stream item message for streaming method with invocationId: '\(invocationId)'")
+        logger.debug("Received stream item message for streaming method with invocationId: '\(invocationId)'")
         do {
             let value = try streamItemMessage.getItem(T.self)
             streamItemReceived(value)
             return nil
         } catch {
-            logger.log(logLevel: .error, message: "Error while getting stream item value for method with invocationId: '\(invocationId)'")
+            logger.error("Error while getting stream item value for method with invocationId: '\(invocationId)'")
             return error
         }
     }
@@ -97,10 +98,10 @@ internal class StreamInvocationHandler<T: Decodable>: ServerInvocationHandler {
     func processCompletion(completionMessage: CompletionMessage) {
         let invocationId = completionMessage.invocationId
         if let invocationError = completionMessage.error {
-            logger.log(logLevel: .error, message: "Streaming server method with invocationId \(invocationId) failed with: \(invocationError)")
+            logger.error("Streaming server method with invocationId \(invocationId) failed with: \(invocationError)")
             invocationDidComplete(SignalRError.hubInvocationError(message: invocationError))
         } else {
-            logger.log(logLevel: .debug, message: "Streaming server method with invocationId \(invocationId) completed successfully")
+            logger.debug("Streaming server method with invocationId \(invocationId) completed successfully")
             invocationDidComplete(nil)
         }
     }

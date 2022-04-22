@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Logging
 
 public class JSONHubProtocol: HubProtocol {
     private static let recordSeparator = UInt8(0x1e)
@@ -30,17 +31,17 @@ public class JSONHubProtocol: HubProtocol {
         // do not try to parse the last payload if it is not terminated with record separator
         var count = payloads.count
         if count > 0 && input.last != JSONHubProtocol.recordSeparator {
-            logger.log(logLevel: .warning, message: "Partial message received. Here be dragons...")
+            logger.warning("Partial message received. Here be dragons...")
             count = count - 1
         }
 
-        logger.log(logLevel: .debug, message: "Payload contains \(count) message(s)")
+        logger.debug("Payload contains \(count) message(s)")
 
         return try payloads[0..<count].map{ try createHubMessage(payload: $0) }
     }
 
     public func createHubMessage(payload: Data) throws -> HubMessage {
-        logger.log(logLevel: .debug, message: "Message received: \(String(data: payload, encoding: .utf8) ?? "(empty)")")
+        logger.debug("Message received: \(String(data: payload, encoding: .utf8) ?? "(empty)")")
 
         do {
         let messageType = try getMessageType(payload: payload)
@@ -56,7 +57,7 @@ public class JSONHubProtocol: HubProtocol {
             case .Close:
                 return try decoder.decode(CloseMessage.self, from: payload)
             default:
-                logger.log(logLevel: .error, message: "Unsupported messageType: \(messageType)")
+                logger.error("Unsupported messageType: \(messageType)")
                 throw SignalRError.unknownMessageType
             }
         } catch {
@@ -74,7 +75,7 @@ public class JSONHubProtocol: HubProtocol {
         do {
             return try decoder.decode(MessageTypeHelper.self, from: payload).type
         } catch {
-            logger.log(logLevel: .error, message: "Getting messageType failed: \(error)")
+            logger.error("Getting messageType failed: \(error)")
             throw SignalRError.protocolViolation(underlyingError: error)
         }
     }

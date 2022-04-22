@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Logging
 
 /**
  A helper class that makes creating and configuring `HubConnection`s easy.
@@ -23,7 +24,7 @@ public class HubConnectionBuilder {
     private var hubProtocolFactory: (Logger) -> HubProtocol = {logger in JSONHubProtocol(logger: logger)}
     private let httpConnectionOptions = HttpConnectionOptions()
     private let hubConnectionOptions = HubConnectionOptions()
-    private var logger: Logger = NullLogger()
+    private var logger: Logger = .signalRClient
     private var delegate: HubConnectionDelegate?
     private var reconnectPolicy: ReconnectPolicy = NoReconnectPolicy()
     private var useLegacyHttpConnection = false
@@ -77,8 +78,8 @@ public class HubConnectionBuilder {
      - note: By default logging is disabled. When using this overload all log entries whose level is greater or equal than `minLogLevel` (with `debug` being
              the lowest logging level) will be written using the `print` function.
      */
-    public func withLogging(minLogLevel: LogLevel) -> HubConnectionBuilder {
-        logger = FilteringLogger(minLogLevel: minLogLevel, logger: PrintLogger())
+    @available(*, deprecated)
+    public func withLogging(minLogLevel: Logger.Level) -> HubConnectionBuilder {
         return self
     }
 
@@ -102,8 +103,8 @@ public class HubConnectionBuilder {
      - parameter minLogLevel: minimum log level
      - parameter logger: custom logger
      */
-    public func withLogging(minLogLevel: LogLevel, logger: Logger) -> HubConnectionBuilder {
-        self.logger = FilteringLogger(minLogLevel: minLogLevel, logger: logger)
+    @available(*, deprecated)
+    public func withLogging(minLogLevel: Logger.Level, logger: Logger) -> HubConnectionBuilder {
         return self
     }
 
@@ -195,7 +196,7 @@ public class HubConnectionBuilder {
     
     private func createLegacyHttpConnection(transportFactory: TransportFactory) -> HttpConnection {
         if !(reconnectPolicy is NoReconnectPolicy) {
-            logger.log(logLevel: .error, message: "Using reconnect with legacy HttpConnection is not supported. Ignoring reconnect settings.")
+            logger.error("Using reconnect with legacy HttpConnection is not supported. Ignoring reconnect settings.")
         }
         return HttpConnection(url: url, options: httpConnectionOptions, transportFactory: transportFactory, logger: logger)
     }
