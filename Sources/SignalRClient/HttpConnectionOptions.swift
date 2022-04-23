@@ -7,9 +7,6 @@
 //
 
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /**
 HttpConnection configuration options.
