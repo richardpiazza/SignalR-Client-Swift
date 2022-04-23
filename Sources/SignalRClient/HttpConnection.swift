@@ -73,21 +73,21 @@ public class HttpConnection: Connection {
             transport = try! self.transportFactory.createTransport(availableTransports: [TransportDescription(transportType: TransportType.webSockets, transferFormats: [TransferFormat.text, TransferFormat.binary])])
             startTransport(connectionId: nil)
         } else {
-            negotiate(negotiateUrl: createNegotiateUrl(), accessToken: nil) { negotiationResponse in
+            negotiate(negotiateUrl: createNegotiateUrl(), accessToken: nil) { payload in
                 do {
-                    self.transport = try self.transportFactory.createTransport(availableTransports: negotiationResponse.availableTransports)
+                    self.transport = try self.transportFactory.createTransport(availableTransports: payload.transports)
                 } catch {
                     self.logger.error("Creating transport failed: \(error)")
                     self.failOpenWithError(error: error, changeState: true)
                     return
                 }
 
-                self.startTransport(connectionId: negotiationResponse.connectionToken ?? negotiationResponse.connectionId)
+                self.startTransport(connectionId: payload.connectionToken ?? payload.connectionId)
             }
         }
     }
 
-    private func negotiate(negotiateUrl: URL, accessToken: String?, negotiateDidComplete: @escaping (NegotiationResponse) -> Void) {
+    private func negotiate(negotiateUrl: URL, accessToken: String?, negotiateDidComplete: @escaping (Negotiation.Payload) -> Void) {
         if let accessToken = accessToken {
             logger.debug("Overriding accessToken")
             options.accessTokenProvider = { accessToken }
@@ -111,21 +111,26 @@ public class HttpConnection: Connection {
                 self.logger.debug("Negotiate completed with OK status code")
 
                 do {
-                    let payload = httpResponse.contents
-                    self.logger.debug("Negotiate response: \(payload != nil ? String(data: payload!, encoding: .utf8) ?? "(nil)" : "(nil)")")
-
-                    switch try NegotiationPayloadParser.parse(payload: payload) {
-                    case let redirection as Redirection:
+                    guard let payload = httpResponse.contents else {
+                        throw SignalRError.invalidNegotiationResponse(message: "internal error - invalid negotiation payload")
+                    }
+                    
+                    self.logger.debug("Negotiate response: \(String(data: payload, encoding: .utf8) ?? "(nil)")")
+                    
+                    let negotiation = try JSONDecoder().decode(Negotiation.self, from: payload)
+                    switch negotiation {
+                    case .redirection(let redirection):
                         self.logger.debug("Negotiate redirects to \(redirection.url)")
                         self.url = redirection.url
-                        var negotiateUrl = self.url
-                        negotiateUrl.appendPathComponent("negotiate")
-                        self.negotiate(negotiateUrl: negotiateUrl, accessToken: redirection.accessToken, negotiateDidComplete: negotiateDidComplete)
-                    case let negotiationResponse as NegotiationResponse:
+                        let negotiateUrl = redirection.url.appendingPathComponent("negotiate")
+                        self.negotiate(negotiateUrl: negotiateUrl, accessToken: accessToken, negotiateDidComplete: negotiateDidComplete)
+                    case .payload(let payload):
+                        guard !payload.transports.isEmpty else {
+                            throw SignalRError.invalidNegotiationResponse(message: "empty list of transfer formats")
+                        }
+                        
                         self.logger.debug("Negotiation response received")
-                        negotiateDidComplete(negotiationResponse)
-                    default:
-                        throw SignalRError.invalidNegotiationResponse(message: "internal error - unexpected negotiation payload")
+                        negotiateDidComplete(payload)
                     }
                 } catch {
                     self.logger.error("Parsing negotiate response failed: \(error)")

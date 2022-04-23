@@ -64,8 +64,6 @@
 		7391A94122510170007BEF23 /* HubConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91622510170007BEF23 /* HubConnectionDelegate.swift */; };
 		7391A94222510170007BEF23 /* HttpClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91722510170007BEF23 /* HttpClientProtocol.swift */; };
 		7391A94322510170007BEF23 /* HttpClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91722510170007BEF23 /* HttpClientProtocol.swift */; };
-		7391A94422510170007BEF23 /* NegotiationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91822510170007BEF23 /* NegotiationResponse.swift */; };
-		7391A94522510170007BEF23 /* NegotiationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91822510170007BEF23 /* NegotiationResponse.swift */; };
 		7391A94622510170007BEF23 /* TransferFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91922510170007BEF23 /* TransferFormat.swift */; };
 		7391A94722510170007BEF23 /* TransferFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91922510170007BEF23 /* TransferFormat.swift */; };
 		7391A94822510170007BEF23 /* HubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91A22510170007BEF23 /* HubProtocol.swift */; };
@@ -82,6 +80,10 @@
 		7391A95522510170007BEF23 /* HubConnectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92022510170007BEF23 /* HubConnectionBuilder.swift */; };
 		7391A95622510170007BEF23 /* SignalRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92122510170007BEF23 /* SignalRError.swift */; };
 		7391A95722510170007BEF23 /* SignalRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92122510170007BEF23 /* SignalRError.swift */; };
+		E1066FC728157C9C0025B278 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1066FC528157C9C0025B278 /* Negotiation.swift */; };
+		E1066FC828157C9C0025B278 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1066FC528157C9C0025B278 /* Negotiation.swift */; };
+		E1066FC928157C9C0025B278 /* TransportDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1066FC628157C9C0025B278 /* TransportDescription.swift */; };
+		E1066FCA28157C9C0025B278 /* TransportDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1066FC628157C9C0025B278 /* TransportDescription.swift */; };
 		E11151E628130CCA00AF31BC /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = E11151E528130CCA00AF31BC /* Logging */; };
 		E11151EA28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */; };
 		E11151EB28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */; };
@@ -204,7 +206,6 @@
 		7391A91522510170007BEF23 /* HandshakeProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeProtocol.swift; sourceTree = "<group>"; };
 		7391A91622510170007BEF23 /* HubConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionDelegate.swift; sourceTree = "<group>"; };
 		7391A91722510170007BEF23 /* HttpClientProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClientProtocol.swift; sourceTree = "<group>"; };
-		7391A91822510170007BEF23 /* NegotiationResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegotiationResponse.swift; sourceTree = "<group>"; };
 		7391A91922510170007BEF23 /* TransferFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferFormat.swift; sourceTree = "<group>"; };
 		7391A91A22510170007BEF23 /* HubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubProtocol.swift; sourceTree = "<group>"; };
 		7391A91B22510170007BEF23 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -213,6 +214,8 @@
 		7391A91F22510170007BEF23 /* ConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionDelegate.swift; sourceTree = "<group>"; };
 		7391A92022510170007BEF23 /* HubConnectionBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionBuilder.swift; sourceTree = "<group>"; };
 		7391A92122510170007BEF23 /* SignalRError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalRError.swift; sourceTree = "<group>"; };
+		E1066FC528157C9C0025B278 /* Negotiation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
+		E1066FC628157C9C0025B278 /* TransportDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportDescription.swift; sourceTree = "<group>"; };
 		E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionOptions.swift; sourceTree = "<group>"; };
 		E11151E928130CEE00AF31BC /* Logger+SignalRClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+SignalRClient.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -378,7 +381,7 @@
 				7391A91A22510170007BEF23 /* HubProtocol.swift */,
 				7391A91D22510170007BEF23 /* JSONHubProtocol.swift */,
 				415F5B7124BCAC4C0071CE5C /* LongPollingTransport.swift */,
-				7391A91822510170007BEF23 /* NegotiationResponse.swift */,
+				E1066FC528157C9C0025B278 /* Negotiation.swift */,
 				5ABD6A5F2439AE6B00BFA93D /* ReconnectableConnection.swift */,
 				5ABD6A5E2439AE6B00BFA93D /* ReconnectPolicy.swift */,
 				7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */,
@@ -387,6 +390,7 @@
 				7391A91922510170007BEF23 /* TransferFormat.swift */,
 				7391A90722510170007BEF23 /* Transport.swift */,
 				7391A91322510170007BEF23 /* TransportDelegate.swift */,
+				E1066FC628157C9C0025B278 /* TransportDescription.swift */,
 				7391A90C22510170007BEF23 /* TransportType.swift */,
 				7391A91B22510170007BEF23 /* Util.swift */,
 				7391A90822510170007BEF23 /* WebsocketsTransport.swift */,
@@ -638,12 +642,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A3D4EFD22A4D0C2009B0C78 /* CodableHelpers.swift in Sources */,
-				7391A94522510170007BEF23 /* NegotiationResponse.swift in Sources */,
 				7391A92722510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93922510170007BEF23 /* HttpResponse.swift in Sources */,
 				E11151EB28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */,
 				7391A92922510170007BEF23 /* Connection.swift in Sources */,
 				7391A93D22510170007BEF23 /* StreamHandle.swift in Sources */,
+				E1066FCA28157C9C0025B278 /* TransportDescription.swift in Sources */,
 				7391A95122510170007BEF23 /* HttpConnection.swift in Sources */,
 				5A13255722B0CCBC0082C783 /* HubConnectionExtensions.swift in Sources */,
 				E11151ED28130CEE00AF31BC /* Logger+SignalRClient.swift in Sources */,
@@ -655,6 +659,7 @@
 				7391A93122510170007BEF23 /* DefaultHttpClient.swift in Sources */,
 				7391A94B22510170007BEF23 /* Util.swift in Sources */,
 				7391A93F22510170007BEF23 /* HandshakeProtocol.swift in Sources */,
+				E1066FC828157C9C0025B278 /* Negotiation.swift in Sources */,
 				5ABD6A632439AE6B00BFA93D /* ReconnectableConnection.swift in Sources */,
 				7391A94722510170007BEF23 /* TransferFormat.swift in Sources */,
 				7391A93B22510170007BEF23 /* TransportDelegate.swift in Sources */,
@@ -676,12 +681,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A3D4EFC22A4D0C2009B0C78 /* CodableHelpers.swift in Sources */,
-				7391A94422510170007BEF23 /* NegotiationResponse.swift in Sources */,
 				7391A92622510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93822510170007BEF23 /* HttpResponse.swift in Sources */,
 				E11151EA28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */,
 				7391A92822510170007BEF23 /* Connection.swift in Sources */,
 				7391A93C22510170007BEF23 /* StreamHandle.swift in Sources */,
+				E1066FC928157C9C0025B278 /* TransportDescription.swift in Sources */,
 				7391A95022510170007BEF23 /* HttpConnection.swift in Sources */,
 				5A13255622B0CCBC0082C783 /* HubConnectionExtensions.swift in Sources */,
 				E11151EC28130CEE00AF31BC /* Logger+SignalRClient.swift in Sources */,
@@ -693,6 +698,7 @@
 				7391A93022510170007BEF23 /* DefaultHttpClient.swift in Sources */,
 				7391A94A22510170007BEF23 /* Util.swift in Sources */,
 				7391A93E22510170007BEF23 /* HandshakeProtocol.swift in Sources */,
+				E1066FC728157C9C0025B278 /* Negotiation.swift in Sources */,
 				5ABD6A622439AE6B00BFA93D /* ReconnectableConnection.swift in Sources */,
 				7391A94622510170007BEF23 /* TransferFormat.swift in Sources */,
 				7391A93A22510170007BEF23 /* TransportDelegate.swift in Sources */,

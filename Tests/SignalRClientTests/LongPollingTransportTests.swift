@@ -44,14 +44,14 @@ class LongPollingTransportTests: SignalRClientTestCase {
 
         lpTransport.delegate = transportDelegate
         
-        let sessionUrl = getSessionUrl()
+        let sessionUrl = try getSessionUrl()
         lpTransport.start(url: sessionUrl, options: HttpConnectionOptions())
         
         waitForExpectations(timeout: 5 /*seconds*/)
     }
     
     
-    func getSessionUrl() -> URL {
+    func getSessionUrl() throws -> URL {
         // Unlike the websockets test, we can't get away without doing negotiation.
         // This is a simple implementation of the negotiation process to decouple this test from the real negotiation code.
         // This does not handle all possible circumstances but it works with the TestServer setup.
@@ -73,10 +73,13 @@ class LongPollingTransportTests: SignalRClientTestCase {
         }
         task.resume()
         wait(for: [negotiateRequestExpectation], timeout: 5)
-        XCTAssertNotNil(responseData)
         
-        let response = try! NegotiationPayloadParser.parse(payload: responseData) as! NegotiationResponse
-        let connectionId = response.connectionToken!
+        let data = try XCTUnwrap(responseData)
+        let negotiation = try JSONDecoder().decode(Negotiation.self, from: data)
+        guard case let .payload(payload) = negotiation else {
+            throw SignalRError.invalidNegotiationResponse(message: String(data: data, encoding: .utf8) ?? "")
+        }
+        let connectionId = payload.connectionToken!
         let connectionUrl = URL(string: "\(endpoint)?id=\(connectionId)")!
         return connectionUrl
     }
