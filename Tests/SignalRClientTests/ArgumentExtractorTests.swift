@@ -5,7 +5,7 @@ class ArgumentExtractorTests: XCTestCase {
     func testThatArgumentExtractorCallsIntoClientInvocationMessage() {
         let payload = "{ \"type\": 1, \"target\": \"method\", \"arguments\": [42, \"abc\"] }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! ClientInvocationMessage
         let argumentExtractor = ArgumentExtractor(clientInvocationMessage: msg)

@@ -8,9 +8,9 @@ class MockTransportFactory: TransportFactory {
 
     func createTransport(availableTransports: [TransportDescription]) throws -> Transport {
         if availableTransports.contains(where: {$0.transportType == .webSockets}) {
-            currentTransport = WebsocketsTransport(logger: PrintLogger())
+            currentTransport = WebsocketsTransport(logger: .signalRClient)
         } else if availableTransports.contains(where: {$0.transportType == .longPolling}) {
-            currentTransport = LongPollingTransport(logger: PrintLogger())
+            currentTransport = LongPollingTransport(logger: .signalRClient)
         }
         return currentTransport!
     }
