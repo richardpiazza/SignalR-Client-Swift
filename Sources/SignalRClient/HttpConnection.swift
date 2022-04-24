@@ -123,10 +123,10 @@ public class HttpConnection: Connection {
                         self.logger.debug("Negotiate redirects to \(redirection.url)")
                         self.url = redirection.url
                         let negotiateUrl = redirection.url.appendingPathComponent("negotiate")
-                        self.negotiate(negotiateUrl: negotiateUrl, accessToken: accessToken, negotiateDidComplete: negotiateDidComplete)
+                        self.negotiate(negotiateUrl: negotiateUrl, accessToken: redirection.accessToken, negotiateDidComplete: negotiateDidComplete)
                     case .payload(let payload):
                         guard !payload.transports.isEmpty else {
-                            throw SignalRError.invalidNegotiationResponse(message: "empty list of transfer formats")
+                            throw SignalRError.noSupportedTransportAvailable
                         }
                         
                         self.logger.debug("Negotiation response received")

@@ -442,7 +442,7 @@ class HttpConnectionTests: SignalRClientTestCase {
         let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org")!, options: httpConnectionOptions, logger: .signalRClient)
         let connectionDelegate = TestConnectionDelegate()
         connectionDelegate.connectionDidFailToOpenHandler = { error in
-            XCTAssertEqual("\(SignalRError.invalidNegotiationResponse(message: "connectionId property not found or invalid"))", "\(error)")
+            XCTAssertEqual("\(error)", #"keyNotFound(CodingKeys(stringValue: "connectionId", intValue: nil), Swift.DecodingError.Context(codingPath: [], debugDescription: "No value associated with key CodingKeys(stringValue: \"connectionId\", intValue: nil) (\"connectionId\").", underlyingError: nil))"#)
             didFailToOpenExpectation.fulfill()
         }
         httpConnection.delegate = connectionDelegate
