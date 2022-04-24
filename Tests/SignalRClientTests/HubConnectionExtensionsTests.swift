@@ -34,7 +34,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: {
@@ -71,7 +70,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (number: Int) in
@@ -109,7 +107,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int) in
@@ -148,7 +145,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String) in
@@ -188,7 +184,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int) in
@@ -230,7 +225,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?) in
@@ -273,7 +267,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int) in
@@ -317,7 +310,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int, arg7: String) in
@@ -362,7 +354,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int, arg7: String, arg8: Bool) in
@@ -405,7 +396,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: {
@@ -441,7 +431,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (number: Int) in
@@ -478,7 +467,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int) in
@@ -516,7 +504,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String) in
@@ -555,7 +542,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int) in
@@ -596,7 +582,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?) in
@@ -638,7 +623,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int) in
@@ -681,7 +665,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int, arg7: String) in
@@ -725,7 +708,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int, arg7: String, arg8: Bool) in
@@ -770,7 +752,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: {
@@ -806,7 +787,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (number: Int) in
@@ -843,7 +823,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: Int, arg2: Int) in
@@ -881,7 +860,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: Int, arg2: Int, arg3: Int) in
@@ -920,7 +898,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: Int, arg2: Int, arg3: Int, arg4: Int) in
@@ -960,7 +937,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: String, arg3: String, arg4: String, arg5: String) in
@@ -1001,7 +977,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: Bool, arg2: Bool, arg3: Bool, arg4: Bool, arg5: Bool, arg6: Bool) in
@@ -1043,7 +1018,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: Int, arg2: Int, arg3: Int, arg4: Int, arg5: Int, arg6: Int, arg7: Int) in
@@ -1087,7 +1061,6 @@ class HubConnectionExtensionsTests: SignalRClientTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.delegate = hubConnectionDelegate
         hubConnection.on(method: "ManyArgs", callback: { (arg1: String, arg2: Int, arg3: String, arg4: Int, arg5: String?, arg6: Int, arg7: String, arg8: Bool) in

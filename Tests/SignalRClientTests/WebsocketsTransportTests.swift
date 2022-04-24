@@ -17,7 +17,7 @@ class WebsocketsTransportTests: SignalRClientTestCase {
         let didReceiveDataExpectation = expectation(description: "transport received data")
         let didCloseExpectation = expectation(description: "transport closed")
 
-        let wsTransport = WebsocketsTransport(logger: NullLogger())
+        let wsTransport = WebsocketsTransport(logger: .signalRClient)
         let transportDelegate = TestTransportDelegate()
         let message = "Hello, World!"
 
@@ -48,6 +48,6 @@ class WebsocketsTransportTests: SignalRClientTestCase {
     }
 
     func testHasInherentKeepAlive() {
-        XCTAssertFalse(WebsocketsTransport(logger: NullLogger()).inherentKeepAlive)
+        XCTAssertFalse(WebsocketsTransport(logger: .signalRClient).inherentKeepAlive)
     }
 }

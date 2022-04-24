@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 internal class ReconnectableConnection: Connection {
     private let connectionQueue = DispatchQueue(label: "SignalR.reconnection.queue")
@@ -45,17 +46,17 @@ internal class ReconnectableConnection: Connection {
     }
 
     func start() {
-        logger.log(logLevel: .info, message: "Starting reconnectable connection")
+        logger.info("Starting reconnectable connection")
         if changeState(from:[.disconnected], to: .starting) != nil {
             wrappedDelegate = ReconnectableConnectionDelegate(connection: self)
             startInternal()
         } else {
-            logger.log(logLevel: .warning, message: "Reconnectable connection not in the disconnected state. Ignoring start request")
+            logger.warning("Reconnectable connection not in the disconnected state. Ignoring start request")
         }
     }
 
     func send(data: Data, sendDidComplete: @escaping (Error?) -> Void) {
-        logger.log(logLevel: .info, message: "Received send request")
+        logger.info("Received send request")
         guard state != .reconnecting else {
             // TODO: consider buffering
             sendDidComplete(SignalRError.connectionIsReconnecting)
@@ -65,13 +66,13 @@ internal class ReconnectableConnection: Connection {
     }
 
     func stop(stopError: Error?) {
-        logger.log(logLevel: .info, message: "Received connection stop request")
+        logger.info("Received connection stop request")
         _ = changeState(from: nil, to: .stopping)
         underlyingConnection.stop(stopError: stopError)
     }
 
     private func startInternal() {
-        logger.log(logLevel: .debug, message: "Starting or reconnecting")
+        logger.debug("Starting or reconnecting")
         var shouldStart = false
         var currentState = State.disconnected
         connectionQueue.sync {
@@ -80,7 +81,7 @@ internal class ReconnectableConnection: Connection {
         }
 
         if (!shouldStart) {
-            logger.log(logLevel: .info, message: "Aborting start/reconnect due to connection state: \(currentState)")
+            logger.info("Aborting start/reconnect due to connection state: \(currentState)")
             return
         }
 
@@ -92,7 +93,7 @@ internal class ReconnectableConnection: Connection {
     private func changeState(from: [State]?, to: State) -> State? {
         var previousState: State? = nil
 
-        logger.log(logLevel: .debug, message: {
+        logger.debug({
             let initialStates = from?.map{$0.rawValue}.joined(separator: ", ") ?? "(nil)"
             return "Attempting to change state from: '\(initialStates)' to: '\(to)'"
         }())
@@ -102,19 +103,19 @@ internal class ReconnectableConnection: Connection {
                 state = to
             }
         }
-        logger.log(logLevel: .debug, message: "Changing state to: '\(to)' \(previousState == nil ? "failed" : "succeeded")")
+        logger.debug("Changing state to: '\(to)' \(previousState == nil ? "failed" : "succeeded")")
         return previousState
     }
 
     private func restartConnection(error: Error?) {
-        logger.log(logLevel: .debug, message: "Attempting to restart connection")
+        logger.debug("Attempting to restart connection")
         let currentState = state
         if currentState == .starting || currentState == .reconnecting {
             let retryContext = updateAndCreateRetryContext(error: error)
             let nextAttemptInterval = reconnectPolicy.nextAttemptInterval(retryContext: retryContext)
-            logger.log(logLevel: .debug, message: "nextAttemptInterval: \(nextAttemptInterval), RetryContext: \(retryContext)")
+            logger.debug("nextAttemptInterval: \(nextAttemptInterval), RetryContext: \(retryContext)")
             if nextAttemptInterval != .never {
-                logger.log(logLevel: .debug, message: "Scheduling reconnect attempt at: \(nextAttemptInterval)")
+                logger.debug("Scheduling reconnect attempt at: \(nextAttemptInterval)")
                 // TODO: can this cause problems because event handlers are dispatched to main queue as well (via `Util.dispatchToMainThread`)
                 DispatchQueue.main.asyncAfter(deadline: .now() + nextAttemptInterval) {
                     self.startInternal()
@@ -128,15 +129,15 @@ internal class ReconnectableConnection: Connection {
         }
 
         let previousState = changeState(from: nil, to: .disconnected)
-        logger.log(logLevel: .info, message: "Connection not to be restarted. State: \(previousState!.rawValue)")
+        logger.info("Connection not to be restarted. State: \(previousState!.rawValue)")
         if previousState == .starting {
-            logger.log(logLevel: .debug, message: "Opening the connection failed")
+            logger.debug("Opening the connection failed")
             delegate?.connectionDidFailToOpen(error: error ?? SignalRError.invalidOperation(message: "Opening connection failed"))
         } else if previousState == .reconnecting {
-            logger.log(logLevel: .debug, message: "Reconnecting failed")
+            logger.debug("Reconnecting failed")
             delegate?.connectionDidClose(error: error)
         } else {
-            logger.log(logLevel: .debug, message: "Stopping connection")
+            logger.debug("Stopping connection")
         }
     }
 
@@ -153,7 +154,7 @@ internal class ReconnectableConnection: Connection {
         }
 
         if error == nil {
-            logger.log(logLevel: .info, message: "Received nil error. (Can be because Context.Abort())")
+            logger.info("Received nil error. (Can be because Context.Abort())")
         }
 
         let error = error ?? SignalRError.invalidOperation(message: "Unexpected error.")
@@ -178,7 +179,7 @@ internal class ReconnectableConnection: Connection {
             guard let unwrappedConnection = self.connection else {
                 return
             }
-            unwrappedConnection.logger.log(logLevel: .debug, message: "Connection opened successfully")
+            unwrappedConnection.logger.debug("Connection opened successfully")
             unwrappedConnection.resetRetryAttempts()
             let previousState = unwrappedConnection.changeState(from: [.starting, .reconnecting], to: .running)
             if previousState == .starting {
@@ -186,7 +187,7 @@ internal class ReconnectableConnection: Connection {
             } else if previousState == .reconnecting {
                 unwrappedConnection.delegate?.connectionDidReconnect()
             } else {
-                unwrappedConnection.logger.log(logLevel: .debug, message: "Internal error - unexpected connection state")
+                unwrappedConnection.logger.debug("Internal error - unexpected connection state")
                 // TODO: consider using dispatchGroup to block stop while reconnecting/starting.
             }
         }
@@ -203,18 +204,18 @@ internal class ReconnectableConnection: Connection {
             guard let unwrappedConnection = self.connection else {
                 return
             }
-            unwrappedConnection.logger.log(logLevel: .debug, message: "Connection closed")
+            unwrappedConnection.logger.debug("Connection closed")
             let previousState = unwrappedConnection.changeState(from: [.running], to: .reconnecting)
             if previousState != nil {
-                unwrappedConnection.logger.log(logLevel: .debug, message: "Initiating connection restart")
+                unwrappedConnection.logger.debug("Initiating connection restart")
                 connection?.restartConnection(error: error)
             } else {
-                unwrappedConnection.logger.log(logLevel: .debug, message: "Assuming clean stop - stopping connection")
+                unwrappedConnection.logger.debug("Assuming clean stop - stopping connection")
                 if  unwrappedConnection.state != .stopping {
                     // This is wired to the transport so it should not be fired in the starting, reconnecting
                     // or disconnected state (maybe there is a tiny window when it can happen right after a
                     // the transport connected successfully. For now just log an error.
-                    unwrappedConnection.logger.log(logLevel: .error, message: "Internal error - unexpected state")
+                    unwrappedConnection.logger.error("Internal error - unexpected state")
                 }
                 _ = unwrappedConnection.changeState(from: nil, to: .disconnected)
                 unwrappedConnection.delegate?.connectionDidClose(error: error)

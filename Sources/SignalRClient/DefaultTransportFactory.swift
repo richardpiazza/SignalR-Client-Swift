@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Logging
 
 internal class DefaultTransportFactory: TransportFactory {
     let logger: Logger
@@ -63,12 +64,12 @@ internal class DefaultTransportFactory: TransportFactory {
     private func buildTransport(type: TransportType?) -> Transport? {
         if #available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *) {
             if type == .webSockets {
-                logger.log(logLevel: .info, message: "Selected WebSockets transport")
+                logger.info("Selected WebSockets transport")
                 return WebsocketsTransport(logger: logger)
             }
         }
         if type == .longPolling {
-            logger.log(logLevel: .info, message: "Selected LongPolling transport")
+            logger.info("Selected LongPolling transport")
             return LongPollingTransport(logger: logger)
         }
         return nil
