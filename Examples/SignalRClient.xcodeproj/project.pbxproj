@@ -86,6 +86,8 @@
 		7391A95522510170007BEF23 /* HubConnectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92022510170007BEF23 /* HubConnectionBuilder.swift */; };
 		7391A95622510170007BEF23 /* SignalRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92122510170007BEF23 /* SignalRError.swift */; };
 		7391A95722510170007BEF23 /* SignalRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92122510170007BEF23 /* SignalRError.swift */; };
+		E147E18828384D9E00D902E7 /* TransportDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E147E18728384D9E00D902E7 /* TransportDescription.swift */; };
+		E147E18928384D9E00D902E7 /* TransportDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E147E18728384D9E00D902E7 /* TransportDescription.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,6 +215,7 @@
 		7391A91F22510170007BEF23 /* ConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionDelegate.swift; sourceTree = "<group>"; };
 		7391A92022510170007BEF23 /* HubConnectionBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionBuilder.swift; sourceTree = "<group>"; };
 		7391A92122510170007BEF23 /* SignalRError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalRError.swift; sourceTree = "<group>"; };
+		E147E18728384D9E00D902E7 /* TransportDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportDescription.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -355,37 +358,38 @@
 		7391A90622510170007BEF23 /* SignalRClient */ = {
 			isa = PBXGroup;
 			children = (
-				5AF2A1E52803939200715C2E /* HubConnectionOptions.swift */,
-				415F5B7124BCAC4C0071CE5C /* LongPollingTransport.swift */,
-				5ABD6A5F2439AE6B00BFA93D /* ReconnectableConnection.swift */,
-				5ABD6A5E2439AE6B00BFA93D /* ReconnectPolicy.swift */,
-				5A13255522B0CCBC0082C783 /* HubConnectionExtensions.swift */,
 				5A3D4EFB22A4D0C2009B0C78 /* CodableHelpers.swift */,
-				7391A90722510170007BEF23 /* Transport.swift */,
-				7391A90822510170007BEF23 /* WebsocketsTransport.swift */,
-				7391A90922510170007BEF23 /* HttpConnectionOptions.swift */,
 				7391A90A22510170007BEF23 /* Connection.swift */,
-				7391A90B22510170007BEF23 /* HubConnection.swift */,
-				7391A90C22510170007BEF23 /* TransportType.swift */,
-				7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */,
+				7391A91F22510170007BEF23 /* ConnectionDelegate.swift */,
 				7391A90E22510170007BEF23 /* DefaultHttpClient.swift */,
 				7391A90F22510170007BEF23 /* DefaultTransportFactory.swift */,
-				7391A91022510170007BEF23 /* Logger.swift */,
-				7391A91222510170007BEF23 /* HttpResponse.swift */,
-				7391A91322510170007BEF23 /* TransportDelegate.swift */,
-				7391A91422510170007BEF23 /* StreamHandle.swift */,
 				7391A91522510170007BEF23 /* HandshakeProtocol.swift */,
-				7391A91622510170007BEF23 /* HubConnectionDelegate.swift */,
 				7391A91722510170007BEF23 /* HttpClientProtocol.swift */,
-				7391A91822510170007BEF23 /* NegotiationResponse.swift */,
-				7391A91922510170007BEF23 /* TransferFormat.swift */,
-				7391A91A22510170007BEF23 /* HubProtocol.swift */,
-				7391A91B22510170007BEF23 /* Util.swift */,
-				7391A91D22510170007BEF23 /* JSONHubProtocol.swift */,
 				7391A91E22510170007BEF23 /* HttpConnection.swift */,
-				7391A91F22510170007BEF23 /* ConnectionDelegate.swift */,
+				7391A90922510170007BEF23 /* HttpConnectionOptions.swift */,
+				7391A91222510170007BEF23 /* HttpResponse.swift */,
+				7391A90B22510170007BEF23 /* HubConnection.swift */,
 				7391A92022510170007BEF23 /* HubConnectionBuilder.swift */,
+				7391A91622510170007BEF23 /* HubConnectionDelegate.swift */,
+				5A13255522B0CCBC0082C783 /* HubConnectionExtensions.swift */,
+				5AF2A1E52803939200715C2E /* HubConnectionOptions.swift */,
+				7391A91A22510170007BEF23 /* HubProtocol.swift */,
+				7391A91D22510170007BEF23 /* JSONHubProtocol.swift */,
+				7391A91022510170007BEF23 /* Logger.swift */,
+				415F5B7124BCAC4C0071CE5C /* LongPollingTransport.swift */,
+				7391A91822510170007BEF23 /* NegotiationResponse.swift */,
+				5ABD6A5F2439AE6B00BFA93D /* ReconnectableConnection.swift */,
+				5ABD6A5E2439AE6B00BFA93D /* ReconnectPolicy.swift */,
+				7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */,
 				7391A92122510170007BEF23 /* SignalRError.swift */,
+				7391A91422510170007BEF23 /* StreamHandle.swift */,
+				7391A91922510170007BEF23 /* TransferFormat.swift */,
+				7391A90722510170007BEF23 /* Transport.swift */,
+				7391A91322510170007BEF23 /* TransportDelegate.swift */,
+				E147E18728384D9E00D902E7 /* TransportDescription.swift */,
+				7391A90C22510170007BEF23 /* TransportType.swift */,
+				7391A91B22510170007BEF23 /* Util.swift */,
+				7391A90822510170007BEF23 /* WebsocketsTransport.swift */,
 			);
 			path = SignalRClient;
 			sourceTree = "<group>";
@@ -620,6 +624,7 @@
 				7391A92722510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93922510170007BEF23 /* HttpResponse.swift in Sources */,
 				7391A92922510170007BEF23 /* Connection.swift in Sources */,
+				E147E18928384D9E00D902E7 /* TransportDescription.swift in Sources */,
 				7391A93D22510170007BEF23 /* StreamHandle.swift in Sources */,
 				7391A95122510170007BEF23 /* HttpConnection.swift in Sources */,
 				5A13255722B0CCBC0082C783 /* HubConnectionExtensions.swift in Sources */,
@@ -658,6 +663,7 @@
 				7391A92622510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93822510170007BEF23 /* HttpResponse.swift in Sources */,
 				7391A92822510170007BEF23 /* Connection.swift in Sources */,
+				E147E18828384D9E00D902E7 /* TransportDescription.swift in Sources */,
 				7391A93C22510170007BEF23 /* StreamHandle.swift in Sources */,
 				7391A95022510170007BEF23 /* HttpConnection.swift in Sources */,
 				5A13255622B0CCBC0082C783 /* HubConnectionExtensions.swift in Sources */,

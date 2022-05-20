@@ -13,7 +13,9 @@ import XCTest
 
 class LongPollingTransportTests: XCTestCase {
 
-    func testThatLongPollingTransportCanSendAndReceiveMessage() {
+    let decoder = JSONDecoder()
+    
+    func testThatLongPollingTransportCanSendAndReceiveMessage() throws {
         let didOpenExpectation = expectation(description: "transport opened")
         let didReceiveDataExpectation = expectation(description: "transport received data")
         let didCloseExpectation = expectation(description: "transport closed")
@@ -43,14 +45,14 @@ class LongPollingTransportTests: XCTestCase {
 
         lpTransport.delegate = transportDelegate
         
-        let sessionUrl = getSessionUrl()
+        let sessionUrl = try getSessionUrl()
         lpTransport.start(url: sessionUrl, options: HttpConnectionOptions())
         
         waitForExpectations(timeout: 5 /*seconds*/)
     }
     
     
-    func getSessionUrl() -> URL {
+    func getSessionUrl() throws -> URL {
         // Unlike the websockets test, we can't get away without doing negotiation.
         // This is a simple implementation of the negotiation process to decouple this test from the real negotiation code.
         // This does not handle all possible circumstances but it works with the TestServer setup.
@@ -72,11 +74,14 @@ class LongPollingTransportTests: XCTestCase {
         }
         task.resume()
         wait(for: [negotiateRequestExpectation], timeout: 5)
-        XCTAssertNotNil(responseData)
+        let data = try XCTUnwrap(responseData)
+        let response = try decoder.decode(Negotiation.Response.self, from: data)
         
-        let response = try! NegotiationPayloadParser.parse(payload: responseData) as! NegotiationResponse
-        let connectionId = response.connectionToken!
-        let connectionUrl = URL(string: "\(endpoint)?id=\(connectionId)")!
+        guard case let .version1(_, connectionToken, _) = response else {
+            throw SignalRError.invalidNegotiationResponse(message: "Unexpected Negotiation Response Version.")
+        }
+        
+        let connectionUrl = URL(string: "\(endpoint)?id=\(connectionToken)")!
         return connectionUrl
     }
 

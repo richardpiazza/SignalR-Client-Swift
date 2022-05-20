@@ -427,7 +427,7 @@ class HttpConnectionTests: XCTestCase {
         let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org")!, options: httpConnectionOptions, logger: PrintLogger())
         let connectionDelegate = TestConnectionDelegate()
         connectionDelegate.connectionDidFailToOpenHandler = { error in
-            XCTAssertEqual("\(SignalRError.invalidNegotiationResponse(message: "connectionId property not found or invalid"))", "\(error)")
+            XCTAssertEqual("\(error)", #"keyNotFound(CodingKeys(stringValue: "negotiateVersion", intValue: nil), Swift.DecodingError.Context(codingPath: [], debugDescription: "No value associated with key CodingKeys(stringValue: \"negotiateVersion\", intValue: nil) (\"negotiateVersion\").", underlyingError: nil))"#)
             didFailToOpenExpectation.fulfill()
         }
         httpConnection.delegate = connectionDelegate

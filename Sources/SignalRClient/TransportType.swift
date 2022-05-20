@@ -36,3 +36,11 @@ extension TransportType {
         }
     }
 }
+
+extension TransportType: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let transportName = try container.decode(String.self)
+        self = try Self.fromString(transportName: transportName)
+    }
+}

@@ -73,20 +73,39 @@ public class HttpConnection: Connection {
             startTransport(connectionId: nil)
         } else {
             negotiate(negotiateUrl: createNegotiateUrl(), accessToken: nil) { negotiationResponse in
+                let transportConnectionId: String
+                let transports: [TransportDescription]
+                
+                switch negotiationResponse {
+                case .redirection:
+                    // Should not occur. Redirections are handled in the `negotiate(_:_:_:)` method.
+                    self.logger.log(logLevel: .error, message: "Unhandled negotiation redirection")
+                    self.failOpenWithError(error: SignalRError.invalidNegotiationResponse(message: "Unhandled redirection"), changeState: true)
+                    return
+                case .error(let error):
+                    self.logger.log(logLevel: .error, message: "Creating transport failed: \(error)")
+                    self.failOpenWithError(error: SignalRError.invalidNegotiationResponse(message: error), changeState: true)
+                    return
+                case .version0(let connectionId, let availableTransports):
+                    transportConnectionId = connectionId
+                    transports = availableTransports
+                case .version1(_, let connectionToken, let availableTransports):
+                    transportConnectionId = connectionToken
+                    transports = availableTransports
+                }
+                
                 do {
-                    self.transport = try self.transportFactory.createTransport(availableTransports: negotiationResponse.availableTransports)
+                    self.transport = try self.transportFactory.createTransport(availableTransports: transports)
+                    self.startTransport(connectionId: transportConnectionId)
                 } catch {
                     self.logger.log(logLevel: .error, message: "Creating transport failed: \(error)")
                     self.failOpenWithError(error: error, changeState: true)
-                    return
                 }
-
-                self.startTransport(connectionId: negotiationResponse.connectionToken ?? negotiationResponse.connectionId)
             }
         }
     }
 
-    private func negotiate(negotiateUrl: URL, accessToken: String?, negotiateDidComplete: @escaping (NegotiationResponse) -> Void) {
+    private func negotiate(negotiateUrl: URL, accessToken: String?, negotiateDidComplete: @escaping (Negotiation.Response) -> Void) {
         if let accessToken = accessToken {
             logger.log(logLevel: .debug, message: "Overriding accessToken")
             options.accessTokenProvider = { accessToken }
@@ -99,40 +118,43 @@ public class HttpConnection: Connection {
                 self.failOpenWithError(error: e, changeState: true)
                 return
             }
-
+            
             guard let httpResponse = httpResponse else {
                 self.logger.log(logLevel: .error, message: "Negotiate returned (nil) httpResponse")
                 self.failOpenWithError(error: SignalRError.invalidNegotiationResponse(message: "negotiate returned nil httpResponse."), changeState: true)
                 return
             }
-
-            if httpResponse.statusCode == 200 {
-                self.logger.log(logLevel: .debug, message: "Negotiate completed with OK status code")
-
-                do {
-                    let payload = httpResponse.contents
-                    self.logger.log(logLevel: .debug, message: "Negotiate response: \(payload != nil ? String(data: payload!, encoding: .utf8) ?? "(nil)" : "(nil)")")
-
-                    switch try NegotiationPayloadParser.parse(payload: payload) {
-                    case let redirection as Redirection:
-                        self.logger.log(logLevel: .debug, message: "Negotiate redirects to \(redirection.url)")
-                        self.url = redirection.url
-                        var negotiateUrl = self.url
-                        negotiateUrl.appendPathComponent("negotiate")
-                        self.negotiate(negotiateUrl: negotiateUrl, accessToken: redirection.accessToken, negotiateDidComplete: negotiateDidComplete)
-                    case let negotiationResponse as NegotiationResponse:
-                        self.logger.log(logLevel: .debug, message: "Negotiation response received")
-                        negotiateDidComplete(negotiationResponse)
-                    default:
-                        throw SignalRError.invalidNegotiationResponse(message: "internal error - unexpected negotiation payload")
-                    }
-                } catch {
-                    self.logger.log(logLevel: .error, message: "Parsing negotiate response failed: \(error)")
-                    self.failOpenWithError(error: error, changeState: true)
-                }
-            } else {
+            
+            guard httpResponse.statusCode == 200 else {
                 self.logger.log(logLevel: .error, message: "HTTP request error. statusCode: \(httpResponse.statusCode)\ndescription:\(httpResponse.contents != nil ? String(data: httpResponse.contents!, encoding: .utf8) ?? "(nil)" : "(nil)")")
                 self.failOpenWithError(error: SignalRError.webError(statusCode: httpResponse.statusCode), changeState: true)
+                return
+            }
+            
+            guard let payload = httpResponse.contents else {
+                self.logger.log(logLevel: .error, message: "Negotiate returned (nil) httpResponse")
+                self.failOpenWithError(error: SignalRError.invalidNegotiationResponse(message: "negotiate returned nil httpResponse."), changeState: true)
+                return
+            }
+            
+            self.logger.log(logLevel: .debug, message: "Negotiate response: \(String(data: payload, encoding: .utf8) ?? "(nil)")")
+            
+            do {
+                let response = try JSONDecoder().decode(Negotiation.Response.self, from: payload)
+                switch response {
+                case .redirection(let url, let accessToken):
+                    self.logger.log(logLevel: .debug, message: "Negotiate redirects to \(url)")
+                    self.url = url
+                    var negotiateUrl = self.url
+                    negotiateUrl.appendPathComponent("negotiate")
+                    self.negotiate(negotiateUrl: negotiateUrl, accessToken: accessToken, negotiateDidComplete: negotiateDidComplete)
+                default:
+                    self.logger.log(logLevel: .debug, message: "Negotiation response received")
+                    negotiateDidComplete(response)
+                }
+            } catch {
+                self.logger.log(logLevel: .error, message: "Parsing negotiate response failed: \(error)")
+                self.failOpenWithError(error: error, changeState: true)
             }
         }
     }
