@@ -68,8 +68,8 @@
 		7391A94122510170007BEF23 /* HubConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91622510170007BEF23 /* HubConnectionDelegate.swift */; };
 		7391A94222510170007BEF23 /* HttpClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91722510170007BEF23 /* HttpClientProtocol.swift */; };
 		7391A94322510170007BEF23 /* HttpClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91722510170007BEF23 /* HttpClientProtocol.swift */; };
-		7391A94422510170007BEF23 /* NegotiationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91822510170007BEF23 /* NegotiationResponse.swift */; };
-		7391A94522510170007BEF23 /* NegotiationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91822510170007BEF23 /* NegotiationResponse.swift */; };
+		7391A94422510170007BEF23 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91822510170007BEF23 /* Negotiation.swift */; };
+		7391A94522510170007BEF23 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91822510170007BEF23 /* Negotiation.swift */; };
 		7391A94622510170007BEF23 /* TransferFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91922510170007BEF23 /* TransferFormat.swift */; };
 		7391A94722510170007BEF23 /* TransferFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91922510170007BEF23 /* TransferFormat.swift */; };
 		7391A94822510170007BEF23 /* HubProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91A22510170007BEF23 /* HubProtocol.swift */; };
@@ -206,7 +206,7 @@
 		7391A91522510170007BEF23 /* HandshakeProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeProtocol.swift; sourceTree = "<group>"; };
 		7391A91622510170007BEF23 /* HubConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionDelegate.swift; sourceTree = "<group>"; };
 		7391A91722510170007BEF23 /* HttpClientProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClientProtocol.swift; sourceTree = "<group>"; };
-		7391A91822510170007BEF23 /* NegotiationResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegotiationResponse.swift; sourceTree = "<group>"; };
+		7391A91822510170007BEF23 /* Negotiation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
 		7391A91922510170007BEF23 /* TransferFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferFormat.swift; sourceTree = "<group>"; };
 		7391A91A22510170007BEF23 /* HubProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubProtocol.swift; sourceTree = "<group>"; };
 		7391A91B22510170007BEF23 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -377,7 +377,7 @@
 				7391A91D22510170007BEF23 /* JSONHubProtocol.swift */,
 				7391A91022510170007BEF23 /* Logger.swift */,
 				415F5B7124BCAC4C0071CE5C /* LongPollingTransport.swift */,
-				7391A91822510170007BEF23 /* NegotiationResponse.swift */,
+				7391A91822510170007BEF23 /* Negotiation.swift */,
 				5ABD6A5F2439AE6B00BFA93D /* ReconnectableConnection.swift */,
 				5ABD6A5E2439AE6B00BFA93D /* ReconnectPolicy.swift */,
 				7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */,
@@ -619,7 +619,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A3D4EFD22A4D0C2009B0C78 /* CodableHelpers.swift in Sources */,
-				7391A94522510170007BEF23 /* NegotiationResponse.swift in Sources */,
+				7391A94522510170007BEF23 /* Negotiation.swift in Sources */,
 				5AF2A1E72803939200715C2E /* HubConnectionOptions.swift in Sources */,
 				7391A92722510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93922510170007BEF23 /* HttpResponse.swift in Sources */,
@@ -658,7 +658,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A3D4EFC22A4D0C2009B0C78 /* CodableHelpers.swift in Sources */,
-				7391A94422510170007BEF23 /* NegotiationResponse.swift in Sources */,
+				7391A94422510170007BEF23 /* Negotiation.swift in Sources */,
 				5AF2A1E62803939200715C2E /* HubConnectionOptions.swift in Sources */,
 				7391A92622510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93822510170007BEF23 /* HttpResponse.swift in Sources */,
