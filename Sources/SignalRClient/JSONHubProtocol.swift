@@ -46,7 +46,9 @@ public class JSONHubProtocol: HubProtocol {
         let messageType = try getMessageType(payload: payload)
             switch messageType {
             case .Invocation:
-                return try decoder.decode(ClientInvocationMessage.self, from: payload)
+                let message =  try decoder.decode(ClientInvocationMessage.self, from: payload)
+                message.argumentPayloads = try getArgumentsPayloads(from: payload)
+                return message
             case .StreamItem:
                 return try decoder.decode(StreamItemMessage.self, from: payload)
             case .Completion:
@@ -77,6 +79,26 @@ public class JSONHubProtocol: HubProtocol {
             logger.log(logLevel: .error, message: "Getting messageType failed: \(error)")
             throw SignalRError.protocolViolation(underlyingError: error)
         }
+    }
+    
+    private func getArgumentsPayloads(from payload: Data) throws -> [Data] {
+        let object = try JSONSerialization.jsonObject(with: payload, options: .fragmentsAllowed)
+        guard let dictionary = object as? [String: Any] else {
+            throw SignalRError.invalidMessage
+        }
+        
+        guard let objects = dictionary[ClientInvocationMessage.CodingKeys.arguments.stringValue] as? [Any] else {
+            throw SignalRError.invalidMessage
+        }
+        
+        var payloads: [Data] = []
+        
+        for object in objects {
+            let data = try JSONSerialization.data(withJSONObject: object, options: .fragmentsAllowed)
+            payloads.append(data)
+        }
+        
+        return payloads
     }
 
     public func writeMessage(message: HubMessage) throws -> Data {

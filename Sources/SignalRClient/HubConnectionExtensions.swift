@@ -561,6 +561,22 @@ public extension HubConnection {
 
         self.on(method: method, callback: cb)
     }
+    
+    /// Registers a callback for a client-side hub method that relays arguments as a collection of bytes (`[Data]`)
+    ///
+    /// In some scenarios, a `Decodable` data-type may not be known or concrete at the point of registering a method callback.
+    /// This method allows for accessing the underlying bytes (_JSON collections/fragments when using the `JSONHubProtocol`_) that
+    /// represent the arguments sent by the server, This allows an implementer the ability to decode when convenient or attempt alternative
+    /// decoding.
+    ///
+    /// - parameters:
+    ///   - method: The name of the client-side method for which to register the callback.
+    ///   - callback: Function that will be called when the `method` is invoked from the server.
+    func on(method: String, callback: @escaping ([Data]) -> Void) {
+        on(method: method) { (argumentExtractor: ArgumentExtractor) in
+            callback(argumentExtractor.argumentPayloads)
+        }
+    }
 
     /**
      Allows registering callbacks for client side hub methods with 1 parameter.

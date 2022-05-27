@@ -567,6 +567,9 @@ fileprivate class HubConnectionConnectionDelegate: ConnectionDelegate {
  */
 public class ArgumentExtractor {
     let clientInvocationMessage: ClientInvocationMessage
+    
+    /// Raw collection of argument `Data` provided with the client message.
+    public var argumentPayloads: [Data] { clientInvocationMessage.argumentPayloads }
 
     /**
      Initializes an `ArgumentExtractor` with the received `ClientInvocationMessage`.

@@ -687,7 +687,7 @@ class HubConnectionTests: XCTestCase {
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .build()
 
-        hubConnection.on(method: "GetNumber", callback: { argumentExtractor in
+        hubConnection.on(method: "GetNumber", callback: { (argumentExtractor: ArgumentExtractor) in
             XCTFail("Should not be invoked")
         })
 

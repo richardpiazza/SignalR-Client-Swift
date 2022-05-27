@@ -81,8 +81,9 @@ public class ClientInvocationMessage: HubMessage, Decodable {
     public let type = MessageType.Invocation
     public let target: String
     private var arguments: UnkeyedDecodingContainer?
+    public internal(set) var argumentPayloads: [Data] = []
 
-    public required init (from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         target = try container.decode(String.self, forKey: .target)
         if container.contains(.arguments) {
@@ -122,13 +123,13 @@ public class StreamItemMessage: HubMessage, Codable {
     let container: KeyedDecodingContainer<StreamItemMessage.CodingKeys>?
     let item: Encodable?
 
-    public required init (from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         container = try decoder.container(keyedBy: CodingKeys.self)
         invocationId = try container!.decode(String.self, forKey: .invocationId)
         item = nil
     }
 
-    public init (invocationId: String, item: Encodable) {
+    public init(invocationId: String, item: Encodable) {
         self.invocationId = invocationId
         self.item = item
         container = nil
@@ -170,14 +171,14 @@ public class CompletionMessage: HubMessage, Codable {
     public let hasResult: Bool
     let container: KeyedDecodingContainer<CompletionMessage.CodingKeys>?
 
-    public required init (from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         container = try decoder.container(keyedBy: CodingKeys.self)
         invocationId = try container!.decode(String.self, forKey: .invocationId)
         error = try container!.decodeIfPresent(String.self, forKey: .error)
         hasResult = container!.contains(.result)
     }
 
-    public init (invocationId: String, error: String?) {
+    public init(invocationId: String, error: String?) {
         self.invocationId = invocationId
         self.error = error
         hasResult = false

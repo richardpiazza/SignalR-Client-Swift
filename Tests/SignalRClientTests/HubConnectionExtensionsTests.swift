@@ -763,6 +763,42 @@ class HubConnectionExtensionsTests: XCTestCase {
         waitForExpectations(timeout: 5 /*seconds*/)
     }
 
+    func testThatClientHubMethodRegisteredWithGenericOnMethodCanBeInvoked_bytes() {
+        let didInvokeClientMethod = expectation(description: "client method invoked")
+
+        let hubConnectionDelegate = TestHubConnectionDelegate()
+        hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
+            hubConnection.invoke(method: "InvokeManyArgs1", 42) { error in
+                XCTAssertNil(error)
+                hubConnection.stop()
+            }
+        }
+
+        let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
+            .withLogging(minLogLevel: .debug)
+            .build()
+        hubConnection.delegate = hubConnectionDelegate
+        hubConnection.on(method: "ManyArgs", callback: { (bytes: [Data]) in
+            XCTAssertEqual(bytes.count, 1)
+            guard let first = bytes.first else {
+                XCTFail()
+                return
+            }
+            
+            guard let value = try? JSONDecoder().decode(Int.self, from: first) else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(value, 42)
+            didInvokeClientMethod.fulfill()
+        })
+
+        hubConnection.start()
+
+        waitForExpectations(timeout: 5 /*seconds*/)
+    }
+
     func testThatClientHubMethodRegisteredWithGenericOnMethodCanBeInvoked_1arg() {
         let didOpenExpectation = expectation(description: "connection opened")
         let didReceiveInvocationResult = expectation(description: "received invocation result")
