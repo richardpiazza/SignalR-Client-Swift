@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Logging
 @testable import SignalRClient
 
 class HubConnectionTests: XCTestCase {
@@ -33,7 +34,6 @@ class HubConnectionTests: XCTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .withHubProtocol(hubProtocolFactory: {_ in HubProtocolFake()})
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .build()
@@ -98,7 +98,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.start()
 
@@ -162,7 +161,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
-            .withLogging(minLogLevel: .debug)
             .build()
 
         hubConnection.start()
@@ -228,7 +226,7 @@ class HubConnectionTests: XCTestCase {
         let invocationCancelledExpectation = expectation(description: "invocation cancelled")
 
         let testConnection = TestConnection()
-        let logger = PrintLogger()
+        let logger = Logger.signalRClient
         let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: logger), logger: logger)
         let hubConnectionDelegate = TestHubConnectionDelegate()
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
@@ -259,7 +257,7 @@ class HubConnectionTests: XCTestCase {
         let testError = SignalRError.invalidOperation(message: "testError")
 
         let testConnection = TestConnection()
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()))
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient))
         let hubConnectionDelegate = TestHubConnectionDelegate()
         hubConnection.delegate = hubConnectionDelegate
         hubConnectionDelegate.connectionDidOpenHandler = { hubConnection in
@@ -366,7 +364,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.start()
 
@@ -404,7 +401,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
-            .withLogging(minLogLevel: .debug)
             .build()
         hubConnection.start()
 
@@ -415,7 +411,7 @@ class HubConnectionTests: XCTestCase {
         let invocationCancelledExpectation = expectation(description: "invocation cancelled")
 
         let testConnection = TestConnection()
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()))
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient))
         let hubConnectionDelegate = TestHubConnectionDelegate()
         hubConnectionDelegate.connectionDidOpenHandler = {hubConnection in
             _ = hubConnection.stream(method: "StreamNumbers", arguments: [5, 100], streamItemReceived: { (_: Int) in }, invocationDidComplete: { error in
@@ -443,7 +439,7 @@ class HubConnectionTests: XCTestCase {
         let testError = SignalRError.invalidOperation(message: "testError")
 
         let testConnection = TestConnection()
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()))
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient))
         let hubConnectionDelegate = TestHubConnectionDelegate()
         hubConnectionDelegate.connectionDidOpenHandler = {hubConnection in
             _ = hubConnection.stream(method: "StreamNumbers", arguments: [5, 100], streamItemReceived: { (_: Int) in }, invocationDidComplete: { error in
@@ -471,7 +467,6 @@ class HubConnectionTests: XCTestCase {
         let invocationDidComplete = expectation(description: "stream cancellation completed")
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .build()
         var lastItem = -1
         let hubConnectionDelegate = TestHubConnectionDelegate()
@@ -515,7 +510,7 @@ class HubConnectionTests: XCTestCase {
             DispatchQueue.main.async {sendDidComplete(msg.contains("\"type\":5") ? SignalRError.invalidOperation(message: "test") : nil)}
         }
 
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()))
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient))
         let hubConnectionDelegate = TestHubConnectionDelegate()
         hubConnectionDelegate.connectionDidOpenHandler = {hubConnection in
             let streamHandle = hubConnection.stream(method: "TestStream", arguments: [], streamItemReceived: { (_: Int) in XCTFail() }, invocationDidComplete: { error in
@@ -604,7 +599,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
-            .withLogging(minLogLevel: .debug)
             .build()
 
         hubConnection.on(method: "GetNumber", callback: { argumentExtractor in
@@ -643,7 +637,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
-            .withLogging(minLogLevel: .debug)
             .build()
 
         hubConnection.on(method: "ManyArgs", callback: { argumentExtractor in
@@ -922,7 +915,7 @@ class HubConnectionTests: XCTestCase {
         class FakeHttpConnection: HttpConnection {
             var stopCalled: Bool = false
             init(url: URL) {
-                let logger = NullLogger()
+                let logger = Logger.signalRClient
                 super.init(url: url, options: HttpConnectionOptions(), transportFactory: DefaultTransportFactory(logger: logger), logger: logger)
             }
 
@@ -933,7 +926,7 @@ class HubConnectionTests: XCTestCase {
         }
 
         let fakeConnection = FakeHttpConnection(url: URL(string: "http://fakeuri.org")!)
-        let hubConnection = HubConnection(connection: fakeConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()))
+        let hubConnection = HubConnection(connection: fakeConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient))
         hubConnection.stop()
         XCTAssertTrue(fakeConnection.stopCalled)
     }
@@ -942,7 +935,7 @@ class HubConnectionTests: XCTestCase {
         class FakeHttpConnection: HttpConnection {
             var stopError: Error?
             init(url: URL) {
-                let logger = NullLogger()
+                let logger = Logger.signalRClient
                 super.init(url: url, options: HttpConnectionOptions(), transportFactory: DefaultTransportFactory(logger: logger), logger: logger)
             }
 
@@ -960,7 +953,7 @@ class HubConnectionTests: XCTestCase {
         }
 
         let fakeConnection = FakeHttpConnection(url: URL(string: "http://fakeuri.org")!)
-        let hubConnection = HubConnection(connection: fakeConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()))
+        let hubConnection = HubConnection(connection: fakeConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient))
         hubConnection.start()
         let payload = "{}\u{1e}{ \"type\": 7, \"error\": \"Server Error\" }\u{1e}"
         fakeConnection.delegate!.connectionDidReceiveData(connection: fakeConnection, data: payload.data(using: .utf8)!)
@@ -977,7 +970,6 @@ class HubConnectionTests: XCTestCase {
         }
 
         let hubConnection = HubConnectionBuilder(url: TESTHUB_WEBSOCKETS_URL)
-            .withLogging(minLogLevel: .debug)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .withHttpConnectionOptions(configureHttpOptions: {options in
                 options.skipNegotiation = true
@@ -997,7 +989,6 @@ class HubConnectionTests: XCTestCase {
         let testTransportFactory = TestTransportFactory()
         let hubConnectionDelegate = TestHubConnectionDelegate()
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .withCustomTransportFactory(transportFactory: {_, _ in return testTransportFactory})
             .withAutoReconnect(reconnectPolicy: DefaultReconnectPolicy(retryIntervals: [DispatchTimeInterval.milliseconds(0)]))
@@ -1042,7 +1033,6 @@ class HubConnectionTests: XCTestCase {
         var reconnectAttemptCount = 9
         let hubConnectionDelegate = TestHubConnectionDelegate()
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .withAutoReconnect(reconnectPolicy: DefaultReconnectPolicy(retryIntervals: [DispatchTimeInterval.milliseconds(0)]))
             .withCustomTransportFactory(transportFactory: {_, _ in return testTransportFactory })
@@ -1082,7 +1072,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnectionDelegate = TestHubConnectionDelegate()
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .build()
 
@@ -1111,7 +1100,6 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnectionDelegate = TestHubConnectionDelegate()
         let hubConnection = HubConnectionBuilder(url: TARGET_TESTHUB_URL)
-            .withLogging(minLogLevel: .debug)
             .withHubConnectionDelegate(delegate: hubConnectionDelegate)
             .withAutoReconnect(reconnectPolicy: DefaultReconnectPolicy(retryIntervals: []))
             .build()
@@ -1184,7 +1172,7 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnectionOptions = HubConnectionOptions()
         hubConnectionOptions.keepAliveInterval = 0.1
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: PrintLogger()), hubConnectionOptions: hubConnectionOptions, logger: PrintLogger())
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient), hubConnectionOptions: hubConnectionOptions)
         hubConnection.start()
 
         waitForExpectations(timeout: 5 /*seconds*/)
@@ -1206,7 +1194,7 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnectionOptions = HubConnectionOptions()
         hubConnectionOptions.keepAliveInterval = 1
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()), hubConnectionOptions: hubConnectionOptions)
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient), hubConnectionOptions: hubConnectionOptions)
         hubConnection.start()
         Thread.sleep(forTimeInterval: 0.5)
         hubConnection.stop()
@@ -1229,7 +1217,7 @@ class HubConnectionTests: XCTestCase {
 
         let hubConnectionOptions = HubConnectionOptions()
         hubConnectionOptions.keepAliveInterval = 0.5
-        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: NullLogger()), hubConnectionOptions: hubConnectionOptions)
+        let hubConnection = HubConnection(connection: testConnection, hubProtocol: JSONHubProtocol(logger: .signalRClient), hubConnectionOptions: hubConnectionOptions)
         hubConnection.start()
 
         waitForExpectations(timeout: 1 /*seconds*/)
@@ -1294,9 +1282,9 @@ class TestTransportFactory: TransportFactory {
 
     func createTransport(availableTransports: [TransportDescription]) throws -> Transport {
         if availableTransports.contains(where: {$0.transportType == .webSockets}) {
-            currentTransport = WebsocketsTransport(logger: PrintLogger())
+            currentTransport = WebsocketsTransport(logger: .signalRClient)
         } else if availableTransports.contains(where: {$0.transportType == .longPolling}) {
-            currentTransport = LongPollingTransport(logger: PrintLogger())
+            currentTransport = LongPollingTransport(logger: .signalRClient)
         }
         return currentTransport!
     }
@@ -1306,7 +1294,7 @@ class ArgumentExtractorTests: XCTestCase {
     func testThatArgumentExtractorCallsIntoClientInvocationMessage() {
         let payload = "{ \"type\": 1, \"target\": \"method\", \"arguments\": [42, \"abc\"] }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! ClientInvocationMessage
         let argumentExtractor = ArgumentExtractor(clientInvocationMessage: msg)

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Logging
 
 @available(OSX 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelegate {
@@ -25,7 +26,7 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
     }
 
     public func start(url: URL, options: HttpConnectionOptions) {
-        logger.log(logLevel: .info, message: "Starting WebSocket transport")
+        logger.info("Starting WebSocket transport")
 
         var request = URLRequest(url: convertUrl(url: url))
         populateHeaders(headers: options.headers, request: &request)
@@ -47,7 +48,7 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
     }
 
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-        logger.log(logLevel: .info, message: "WebSocket open")
+        logger.info("WebSocket open")
         delegate?.transportDidOpen()
         readMessage()
     }
@@ -80,11 +81,11 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
     }
 
     private func handleError(error: Error) {
-        logger.log(logLevel: .info, message: "WebSocket error. Error: \(error). Websocket status: \(webSocketTask?.state.rawValue ?? -1)")
+        logger.info("WebSocket error. Error: \(error). Websocket status: \(webSocketTask?.state.rawValue ?? -1)")
         // This handler should not be called after the close event but we need to mark the transport as closed to prevent calling transportDidClose
         // on the delegate multiple times so we can as well add the check and log
         guard !markTransportClosed() else {
-            logger.log(logLevel: .debug, message: "Transport already marked as closed - ignoring error. (handleError)")
+            logger.debug("Transport already marked as closed - ignoring error. (handleError)")
             return
         }
         delegate?.transportDidClose(error)
@@ -98,12 +99,12 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
         }
 
         guard !markTransportClosed() else {
-            logger.log(logLevel: .debug, message: "Transport already marked as closed - ignoring error. (didCompleteWithError)")
+            logger.debug("Transport already marked as closed - ignoring error. (didCompleteWithError)")
             return
         }
 
         let statusCode = (webSocketTask?.response as? HTTPURLResponse)?.statusCode ?? -1
-        logger.log(logLevel: .info, message: "Error starting webSocket. Error: \(error!), HttpStatusCode: \(statusCode), WebSocket closeCode: \(webSocketTask?.closeCode.rawValue ?? -1)")
+        logger.info("Error starting webSocket. Error: \(error!), HttpStatusCode: \(statusCode), WebSocket closeCode: \(webSocketTask?.closeCode.rawValue ?? -1)")
         delegate?.transportDidClose(error)
         shutdownTransport()
     }
@@ -113,12 +114,12 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
         if let reason = reason {
             reasonString = String(decoding: reason, as: UTF8.self)
         }
-        logger.log(logLevel: .info, message: "WebSocket close. Code: \(closeCode.rawValue), reason: \(reasonString)")
+        logger.info("WebSocket close. Code: \(closeCode.rawValue), reason: \(reasonString)")
 
         // the transport could have already been closed as a result of an error. In this case we should not call
         // transportDidClose again on the delegate.
         guard !markTransportClosed() else {
-            logger.log(logLevel: .debug, message: "Transport already marked as closed due to an error - ignoring close. (didCloseWith)")
+            logger.debug("Transport already marked as closed due to an error - ignoring close. (didCloseWith)")
             return
         }
 
@@ -130,7 +131,7 @@ public class WebsocketsTransport: NSObject, Transport, URLSessionWebSocketDelega
     }
 
     private func markTransportClosed() -> Bool {
-        logger.log(logLevel: .debug, message: "Marking transport as closed.")
+        logger.debug("Marking transport as closed.")
         var previousCloseStatus = false
         dispatchQueue.sync {
             previousCloseStatus = isTransportClosed

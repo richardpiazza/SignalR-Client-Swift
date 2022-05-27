@@ -12,35 +12,35 @@ import XCTest
 class JSONHubProtocolTests: XCTestCase {
 
     func testThatHubProtocolReturnsCorrectName() {
-        XCTAssertEqual("json", JSONHubProtocol(logger: NullLogger()).name)
+        XCTAssertEqual("json", JSONHubProtocol(logger: .signalRClient).name)
     }
 
     func testThatHubProtocolReturnsCorrectVersion() {
-        XCTAssertEqual(1, JSONHubProtocol(logger: NullLogger()).version)
+        XCTAssertEqual(1, JSONHubProtocol(logger: .signalRClient).version)
     }
 
     func testThatMessagesWithoutSeparatorAreNotParsed() {
-        XCTAssertEqual(0, try JSONHubProtocol(logger: NullLogger()).parseMessages(input: "abc".data(using: .utf8)!).count)
+        XCTAssertEqual(0, try JSONHubProtocol(logger: .signalRClient).parseMessages(input: "abc".data(using: .utf8)!).count)
     }
 
     func testThatParsingFailsIfMessageNotValidJson() {
-        XCTAssertThrowsError(try JSONHubProtocol(logger: NullLogger()).parseMessages(input: "abc\u{1e}".data(using: .utf8)!))
+        XCTAssertThrowsError(try JSONHubProtocol(logger: .signalRClient).parseMessages(input: "abc\u{1e}".data(using: .utf8)!))
     }
 
     func testThatParsingFailsIfMessageTypeIsMissing() {
-        XCTAssertThrowsError(try JSONHubProtocol(logger: NullLogger()).parseMessages(input: "{}\u{1e}".data(using: .utf8)!)) {
+        XCTAssertThrowsError(try JSONHubProtocol(logger: .signalRClient).parseMessages(input: "{}\u{1e}".data(using: .utf8)!)) {
             error in XCTAssertTrue(JSONHubProtocolTests.isProtocolViolation(error))
         }
     }
 
     func testThatParsingFailsIfMessageTypeIsNotNumber() {
-        XCTAssertThrowsError(try JSONHubProtocol(logger: NullLogger()).parseMessages(input: "{ \"type\": false }\u{1e}".data(using: .utf8)!)) {
+        XCTAssertThrowsError(try JSONHubProtocol(logger: .signalRClient).parseMessages(input: "{ \"type\": false }\u{1e}".data(using: .utf8)!)) {
             error in XCTAssertTrue(JSONHubProtocolTests.isProtocolViolation(error))
         }
     }
 
     func testThatParsingFailsIfMessageTypeIsOutOfRange() {
-        XCTAssertThrowsError(try JSONHubProtocol(logger: NullLogger()).parseMessages(input: "{ \"type\": 42 }\u{1e}".data(using: .utf8)!)) {
+        XCTAssertThrowsError(try JSONHubProtocol(logger: .signalRClient).parseMessages(input: "{ \"type\": 42 }\u{1e}".data(using: .utf8)!)) {
             error in XCTAssertTrue(JSONHubProtocolTests.isProtocolViolation(error))
         }
     }
@@ -48,7 +48,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParseInvocationMessage() {
         let payload = "{ \"type\": 1, \"target\": \"method\" }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! ClientInvocationMessage
         XCTAssertEqual(MessageType.Invocation, msg.type)
@@ -59,7 +59,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatClientInvocationMessageGetArgumentThrowsIfNoArgs() {
         let payload = "{ \"type\": 1, \"target\": \"method\" }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! ClientInvocationMessage
         XCTAssertThrowsError(try msg.getArgument(type: String.self)) { error in
@@ -70,7 +70,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatClientInvocationMessageHasMoreArgsReturnsCorrectValue() {
         let payload = "{ \"type\": 1, \"target\": \"method\", \"arguments\": [42, \"abc\"] }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! ClientInvocationMessage
         XCTAssertTrue(msg.hasMoreArgs)
@@ -91,7 +91,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParseStreamItemMessage() {
         let payload = "{ \"type\": 2, \"invocationId\": \"12\" }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! StreamItemMessage
         XCTAssertEqual(MessageType.StreamItem, msg.type)
@@ -109,7 +109,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParseCompletionErrorMessage() {
         let payload = "{ \"type\": 3, \"invocationId\": \"12\", \"error\": \"Error occurred\" }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! CompletionMessage
         XCTAssertEqual(MessageType.Completion, msg.type)
@@ -122,7 +122,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParseVoidCompletionMessage() {
         let payload = "{ \"type\": 3, \"invocationId\": \"12\" }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! CompletionMessage
         XCTAssertEqual(MessageType.Completion, msg.type)
@@ -135,7 +135,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParseNonVoidCompletionMessage() {
         let payload = "{ \"type\": 3, \"invocationId\": \"12\", \"result\": 42 }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! CompletionMessage
         XCTAssertEqual(MessageType.Completion, msg.type)
@@ -148,7 +148,7 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParseCompletionMessageWithNullResult() {
         let payload = "{ \"type\": 3, \"invocationId\": \"12\", \"result\": null }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         let msg = hubMessages[0] as! CompletionMessage
         XCTAssertEqual(MessageType.Completion, msg.type)
@@ -168,7 +168,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     private func testThatParsingMessageFailsIfInvocationIdMissing(messageType: MessageType) {
         let payload =  "{ \"type\": \(messageType.rawValue) }\u{001e}"
-        XCTAssertThrowsError(try JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)) {
+        XCTAssertThrowsError(try JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)) {
             error in XCTAssertTrue(JSONHubProtocolTests.isProtocolViolation(error))
         }
     }
@@ -176,7 +176,7 @@ class JSONHubProtocolTests: XCTestCase {
     private func testThatParsingMessageFailsIfInvocationIdNotString(messageType: MessageType) {
         let payload = "{ \"type\": \(messageType.rawValue), \"invocationId\": false }\u{001e}"
 
-        XCTAssertThrowsError(try JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)) {
+        XCTAssertThrowsError(try JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)) {
             error in XCTAssertTrue(JSONHubProtocolTests.isProtocolViolation(error))
         }
     }
@@ -184,14 +184,14 @@ class JSONHubProtocolTests: XCTestCase {
     func testThatCanParsePingMessage() {
         let payload = "{ \"type\": 6 }\u{001e}"
 
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         XCTAssertEqual(MessageType.Ping, hubMessages[0].type)
     }
 
     func testThatCanParseCloseMessageWithoutError() {
         let payload = "{ \"type\": 7 }\u{001e}"
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         XCTAssertEqual(MessageType.Close, hubMessages[0].type)
         XCTAssertNil((hubMessages[0] as! CloseMessage).error)
@@ -199,7 +199,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanParseCloseMessageWithError() {
         let payload = "{ \"type\": 7, \"error\": \"Error occurred\" }\u{001e}"
-        let hubMessages = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: payload.data(using: .utf8)!)
+        let hubMessages = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: payload.data(using: .utf8)!)
         XCTAssertEqual(1, hubMessages.count)
         XCTAssertEqual(MessageType.Close, hubMessages[0].type)
         XCTAssertEqual("Error occurred", (hubMessages[0] as! CloseMessage).error)
@@ -207,7 +207,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanWriteServerInvocationMessage() {
         let invocationMessage = ServerInvocationMessage(invocationId: "12", target: "myMethod", arguments: [], streamIds: [])
-        let payload = try! JSONHubProtocol(logger: NullLogger()).writeMessage(message: invocationMessage)
+        let payload = try! JSONHubProtocol(logger: .signalRClient).writeMessage(message: invocationMessage)
         let message = String(data: payload, encoding: .utf8)!
         let data = message[..<message.index(before: message.endIndex)].data(using: .utf8)
         let json = (try! JSONSerialization.jsonObject(with: data!) as? [String: Any])!
@@ -219,9 +219,9 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanWriteInvocationMessageWithoutInvocationId() {
         let invocationMessage = ServerInvocationMessage(target: "myMethod", arguments: [], streamIds: [])
-        let message = try! JSONHubProtocol(logger: NullLogger()).writeMessage(message: invocationMessage)
+        let message = try! JSONHubProtocol(logger: .signalRClient).writeMessage(message: invocationMessage)
 
-        let deserializedMessage = try! JSONHubProtocol(logger: NullLogger()).parseMessages(input: message)[0] as! ClientInvocationMessage
+        let deserializedMessage = try! JSONHubProtocol(logger: .signalRClient).parseMessages(input: message)[0] as! ClientInvocationMessage
 
         XCTAssertEqual(invocationMessage.type, deserializedMessage.type)
         XCTAssertEqual(invocationMessage.target, deserializedMessage.target)
@@ -229,7 +229,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanWriteStreamInvocationMessage() {
         let streamInvocationMessage = StreamInvocationMessage(invocationId: "12", target: "myMethod", arguments: [], streamIds: [])
-        let payload = try! JSONHubProtocol(logger: NullLogger()).writeMessage(message: streamInvocationMessage)
+        let payload = try! JSONHubProtocol(logger: .signalRClient).writeMessage(message: streamInvocationMessage)
         let message = String(data: payload, encoding: .utf8)!
         let data = message[..<message.index(before: message.endIndex)].data(using: .utf8)
         let json = (try! JSONSerialization.jsonObject(with: data!) as? [String: Any])!
@@ -241,7 +241,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanWriteCancelInvocationMessage() {
         let cancelInvocationMessage = CancelInvocationMessage(invocationId: "42")
-        let payload = try! JSONHubProtocol(logger: NullLogger()).writeMessage(message: cancelInvocationMessage)
+        let payload = try! JSONHubProtocol(logger: .signalRClient).writeMessage(message: cancelInvocationMessage)
         let message = String(data: payload, encoding: .utf8)!
         let data = message[..<message.index(before: message.endIndex)].data(using: .utf8)
         let json = (try! JSONSerialization.jsonObject(with: data!) as? [String: Any])!
@@ -252,7 +252,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanWriteStreamItemMessage() {
         let streamItemMessage = StreamItemMessage(invocationId: "12", item: 42)
-        let payload = try! JSONHubProtocol(logger: NullLogger()).writeMessage(message: streamItemMessage)
+        let payload = try! JSONHubProtocol(logger: .signalRClient).writeMessage(message: streamItemMessage)
         let message = String(data: payload, encoding: .utf8)!
         let data = message[..<message.index(before: message.endIndex)].data(using: .utf8)
         let json = (try! JSONSerialization.jsonObject(with: data!) as? [String: Any])!
@@ -264,7 +264,7 @@ class JSONHubProtocolTests: XCTestCase {
 
     func testThatCanWriteCompletionMessage() {
         let completionMessage = CompletionMessage(invocationId: "12", error: "Error occurred")
-        let payload = try! JSONHubProtocol(logger: NullLogger()).writeMessage(message: completionMessage)
+        let payload = try! JSONHubProtocol(logger: .signalRClient).writeMessage(message: completionMessage)
         let message = String(data: payload, encoding: .utf8)!
         let data = message[..<message.index(before: message.endIndex)].data(using: .utf8)
         let json = (try! JSONSerialization.jsonObject(with: data!) as? [String: Any])!

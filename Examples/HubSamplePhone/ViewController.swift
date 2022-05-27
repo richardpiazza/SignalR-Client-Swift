@@ -38,7 +38,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
             self.chatHubConnectionDelegate = ChatHubConnectionDelegate(controller: self)
             self.chatHubConnection = HubConnectionBuilder(url: URL(string: self.serverUrl)!)
-                .withLogging(minLogLevel: .debug)
                 .withAutoReconnect()
                 .withHubConnectionDelegate(delegate: self.chatHubConnectionDelegate!)
                 .build()

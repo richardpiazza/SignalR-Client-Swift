@@ -18,7 +18,7 @@ class LongPollingTransportTests: XCTestCase {
         let didReceiveDataExpectation = expectation(description: "transport received data")
         let didCloseExpectation = expectation(description: "transport closed")
 
-        let lpTransport = LongPollingTransport(logger: PrintLogger())
+        let lpTransport = LongPollingTransport(logger: .signalRClient)
         let transportDelegate = TestTransportDelegate()
         let message = "Hello, World!"
 
@@ -81,6 +81,6 @@ class LongPollingTransportTests: XCTestCase {
     }
 
     func testHasInherentKeepAlive() {
-        XCTAssertTrue(LongPollingTransport(logger: NullLogger()).inherentKeepAlive)
+        XCTAssertTrue(LongPollingTransport(logger: .signalRClient).inherentKeepAlive)
     }
 }

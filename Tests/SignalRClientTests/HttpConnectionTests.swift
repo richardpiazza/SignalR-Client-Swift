@@ -180,7 +180,7 @@ class HttpConnectionTests: XCTestCase {
 
         let testTransport = TestTransport()
         let transportFactory = TestTransportFactory(testTransport)
-        let connection = HttpConnection(url: TARGET_ECHO_URL, options: HttpConnectionOptions(), transportFactory: transportFactory, logger: PrintLogger())
+        let connection = HttpConnection(url: TARGET_ECHO_URL, options: HttpConnectionOptions(), transportFactory: transportFactory, logger: .signalRClient)
         let connectionDelegate = TestConnectionDelegate()
 
         connectionDelegate.connectionDidOpenHandler = { connection in
@@ -296,7 +296,7 @@ class HttpConnectionTests: XCTestCase {
     func testThatCanStopConnectionThatIsStarting() {
         let didFailToOpenExpectation = expectation(description: "connection did fail to open")
 
-        let connection = HttpConnection(url: TARGET_ECHO_URL, options: HttpConnectionOptions(), logger: PrintLogger())
+        let connection = HttpConnection(url: TARGET_ECHO_URL, options: HttpConnectionOptions(), logger: .signalRClient)
         let connectionDelegate = TestConnectionDelegate()
 
         connectionDelegate.connectionDidFailToOpenHandler = { error in
@@ -343,7 +343,7 @@ class HttpConnectionTests: XCTestCase {
 
         let didCloseExpectation = expectation(description: "connection closed")
 
-        let connection = HttpConnection(url: TARGET_ECHO_URL, options: HttpConnectionOptions(), logger: PrintLogger())
+        let connection = HttpConnection(url: TARGET_ECHO_URL, options: HttpConnectionOptions(), logger: .signalRClient)
 
         let connectionDelegate = TestConnectionDelegate()
         connectionDelegate.connectionDidCloseHandler = { error in
@@ -424,7 +424,7 @@ class HttpConnectionTests: XCTestCase {
         let httpClient = TestHttpClient(postHandler: { _ in (HttpResponse(statusCode: 200, contents: "{}".data(using: .utf8)!), nil) })
         let httpConnectionOptions = HttpConnectionOptions()
         httpConnectionOptions.httpClientFactory = { options in httpClient }
-        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org")!, options: httpConnectionOptions, logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org")!, options: httpConnectionOptions, logger: .signalRClient)
         let connectionDelegate = TestConnectionDelegate()
         connectionDelegate.connectionDidFailToOpenHandler = { error in
             XCTAssertEqual("\(SignalRError.invalidNegotiationResponse(message: "connectionId property not found or invalid"))", "\(error)")
@@ -441,7 +441,7 @@ class HttpConnectionTests: XCTestCase {
         let didFailToOpenExpectation = expectation(description: "connection did fail to open")
 
         let httpConnectionOptions = HttpConnectionOptions()
-        let httpConnection = HttpConnection(url: URL(string:"\(BASE_URL)")!, options: httpConnectionOptions, logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"\(BASE_URL)")!, options: httpConnectionOptions, logger: .signalRClient)
         let httpClient = TestHttpClient(postHandler: { _ in
             DispatchQueue.global().async {
                 httpConnection.stop()
@@ -499,7 +499,7 @@ class HttpConnectionTests: XCTestCase {
         httpConnectionOptions.httpClientFactory = { _ in httpClient }
         let transport = FakeTransport()
 
-        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: .signalRClient)
 
         transport.httpConnection = httpConnection
 
@@ -519,7 +519,7 @@ class HttpConnectionTests: XCTestCase {
         let didFailToOpenExpectation = expectation(description: "connection did fail to open")
 
         let httpConnectionOptions = HttpConnectionOptions()
-        let httpConnection = HttpConnection(url: ECHO_NOTRANSPORTS_URL, options: httpConnectionOptions, logger: PrintLogger())
+        let httpConnection = HttpConnection(url: ECHO_NOTRANSPORTS_URL, options: httpConnectionOptions, logger: .signalRClient)
         let httpClient = TestHttpClient(postHandler: { _ in
             return (HttpResponse(statusCode: 200, contents: self.negotiatePayload.data(using: .utf8)!), nil)
         })
@@ -541,7 +541,7 @@ class HttpConnectionTests: XCTestCase {
         let didFailToOpenExpectation = expectation(description: "connection did fail to open")
 
         let httpConnectionOptions = HttpConnectionOptions()
-        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, logger: .signalRClient)
         let httpClient = TestHttpClient(postHandler: { _ in
             let negotiatePayload = "{\"connectionId\":\"6baUtSEmluCoKvmUIqLUJw\",\"connectionToken\": \"9AnFxsjXqnRuz4UBt2W8\",\"negotiateVersion\":1,\"availableTransports\":[]}"
             return (HttpResponse(statusCode: 200, contents: negotiatePayload.data(using: .utf8)!), nil)
@@ -619,7 +619,7 @@ class HttpConnectionTests: XCTestCase {
         let connectionOpenedExpectation = expectation(description: "connection opened")
         let httpConnectionOptions = HttpConnectionOptions()
         let transport = ConnectionIdTransport()
-        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: .signalRClient)
         let httpClient = TestHttpClient(postHandler: { _ in
             return (HttpResponse(statusCode: 200, contents: self.negotiatePayload.data(using: .utf8)!), nil)
         })
@@ -643,7 +643,7 @@ class HttpConnectionTests: XCTestCase {
 
         let httpConnectionOptions = HttpConnectionOptions()
         let transport = TestTransport()
-        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: .signalRClient)
         let httpClient = TestHttpClient(postHandler: { _ in
             return (HttpResponse(statusCode: 200, contents: self.negotiatePayload.data(using: .utf8)!), nil)
         })
@@ -677,7 +677,7 @@ class HttpConnectionTests: XCTestCase {
 
         let httpConnectionOptions = HttpConnectionOptions()
         let transport = UnopenableTransport()
-        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: PrintLogger())
+        let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: .signalRClient)
         let httpClient = TestHttpClient(postHandler: { _ in
             return (HttpResponse(statusCode: 200, contents: self.negotiatePayload.data(using: .utf8)!), nil)
         })
@@ -731,7 +731,7 @@ class HttpConnectionTests: XCTestCase {
             let httpConnectionOptions = HttpConnectionOptions()
             let transport = TestTransport()
             transport.inherentKeepAlive = inherentKeepAlive
-            let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: PrintLogger())
+            let httpConnection = HttpConnection(url: URL(string:"http://fakeuri.org/")!, options: httpConnectionOptions, transportFactory: TestTransportFactory(transport), logger: .signalRClient)
             let httpClient = TestHttpClient(postHandler: { _ in
                 return (HttpResponse(statusCode: 200, contents: self.negotiatePayload.data(using: .utf8)!), nil)
             })

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -54,8 +54,6 @@
 		7391A93122510170007BEF23 /* DefaultHttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A90E22510170007BEF23 /* DefaultHttpClient.swift */; };
 		7391A93222510170007BEF23 /* DefaultTransportFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A90F22510170007BEF23 /* DefaultTransportFactory.swift */; };
 		7391A93322510170007BEF23 /* DefaultTransportFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A90F22510170007BEF23 /* DefaultTransportFactory.swift */; };
-		7391A93422510170007BEF23 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91022510170007BEF23 /* Logger.swift */; };
-		7391A93522510170007BEF23 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91022510170007BEF23 /* Logger.swift */; };
 		7391A93822510170007BEF23 /* HttpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91222510170007BEF23 /* HttpResponse.swift */; };
 		7391A93922510170007BEF23 /* HttpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91222510170007BEF23 /* HttpResponse.swift */; };
 		7391A93A22510170007BEF23 /* TransportDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A91322510170007BEF23 /* TransportDelegate.swift */; };
@@ -86,6 +84,12 @@
 		7391A95522510170007BEF23 /* HubConnectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92022510170007BEF23 /* HubConnectionBuilder.swift */; };
 		7391A95622510170007BEF23 /* SignalRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92122510170007BEF23 /* SignalRError.swift */; };
 		7391A95722510170007BEF23 /* SignalRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7391A92122510170007BEF23 /* SignalRError.swift */; };
+		E11151E628130CCA00AF31BC /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = E11151E528130CCA00AF31BC /* Logging */; };
+		E11151EA28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */; };
+		E11151EB28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */; };
+		E11151EC28130CEE00AF31BC /* Logger+SignalRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11151E928130CEE00AF31BC /* Logger+SignalRClient.swift */; };
+		E11151ED28130CEE00AF31BC /* Logger+SignalRClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11151E928130CEE00AF31BC /* Logger+SignalRClient.swift */; };
+		E11151F128130D7500AF31BC /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = E11151F028130D7500AF31BC /* Logging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,7 +201,6 @@
 		7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerInvocationHandler.swift; sourceTree = "<group>"; };
 		7391A90E22510170007BEF23 /* DefaultHttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultHttpClient.swift; sourceTree = "<group>"; };
 		7391A90F22510170007BEF23 /* DefaultTransportFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTransportFactory.swift; sourceTree = "<group>"; };
-		7391A91022510170007BEF23 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		7391A91222510170007BEF23 /* HttpResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResponse.swift; sourceTree = "<group>"; };
 		7391A91322510170007BEF23 /* TransportDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportDelegate.swift; sourceTree = "<group>"; };
 		7391A91422510170007BEF23 /* StreamHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamHandle.swift; sourceTree = "<group>"; };
@@ -213,6 +216,8 @@
 		7391A91F22510170007BEF23 /* ConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionDelegate.swift; sourceTree = "<group>"; };
 		7391A92022510170007BEF23 /* HubConnectionBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionBuilder.swift; sourceTree = "<group>"; };
 		7391A92122510170007BEF23 /* SignalRError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalRError.swift; sourceTree = "<group>"; };
+		E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubConnectionOptions.swift; sourceTree = "<group>"; };
+		E11151E928130CEE00AF31BC /* Logger+SignalRClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+SignalRClient.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E11151F128130D7500AF31BC /* Logging in Frameworks */,
 				5A4292F9208D2A59008B30EF /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +234,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E11151E628130CCA00AF31BC /* Logging in Frameworks */,
 				5A4292F7208D2A4A008B30EF /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,34 +367,47 @@
 				5ABD6A5F2439AE6B00BFA93D /* ReconnectableConnection.swift */,
 				5ABD6A5E2439AE6B00BFA93D /* ReconnectPolicy.swift */,
 				5A13255522B0CCBC0082C783 /* HubConnectionExtensions.swift */,
+				E11151E828130CEE00AF31BC /* Extensions */,
 				5A3D4EFB22A4D0C2009B0C78 /* CodableHelpers.swift */,
-				7391A90722510170007BEF23 /* Transport.swift */,
-				7391A90822510170007BEF23 /* WebsocketsTransport.swift */,
-				7391A90922510170007BEF23 /* HttpConnectionOptions.swift */,
 				7391A90A22510170007BEF23 /* Connection.swift */,
-				7391A90B22510170007BEF23 /* HubConnection.swift */,
-				7391A90C22510170007BEF23 /* TransportType.swift */,
-				7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */,
+				7391A91F22510170007BEF23 /* ConnectionDelegate.swift */,
 				7391A90E22510170007BEF23 /* DefaultHttpClient.swift */,
 				7391A90F22510170007BEF23 /* DefaultTransportFactory.swift */,
-				7391A91022510170007BEF23 /* Logger.swift */,
-				7391A91222510170007BEF23 /* HttpResponse.swift */,
-				7391A91322510170007BEF23 /* TransportDelegate.swift */,
-				7391A91422510170007BEF23 /* StreamHandle.swift */,
 				7391A91522510170007BEF23 /* HandshakeProtocol.swift */,
-				7391A91622510170007BEF23 /* HubConnectionDelegate.swift */,
 				7391A91722510170007BEF23 /* HttpClientProtocol.swift */,
-				7391A91822510170007BEF23 /* NegotiationResponse.swift */,
-				7391A91922510170007BEF23 /* TransferFormat.swift */,
-				7391A91A22510170007BEF23 /* HubProtocol.swift */,
-				7391A91B22510170007BEF23 /* Util.swift */,
-				7391A91D22510170007BEF23 /* JSONHubProtocol.swift */,
 				7391A91E22510170007BEF23 /* HttpConnection.swift */,
-				7391A91F22510170007BEF23 /* ConnectionDelegate.swift */,
+				7391A90922510170007BEF23 /* HttpConnectionOptions.swift */,
+				7391A91222510170007BEF23 /* HttpResponse.swift */,
+				7391A90B22510170007BEF23 /* HubConnection.swift */,
 				7391A92022510170007BEF23 /* HubConnectionBuilder.swift */,
+				7391A91622510170007BEF23 /* HubConnectionDelegate.swift */,
+				5A13255522B0CCBC0082C783 /* HubConnectionExtensions.swift */,
+				E11151E728130CEE00AF31BC /* HubConnectionOptions.swift */,
+				7391A91A22510170007BEF23 /* HubProtocol.swift */,
+				7391A91D22510170007BEF23 /* JSONHubProtocol.swift */,
+				415F5B7124BCAC4C0071CE5C /* LongPollingTransport.swift */,
+				7391A91822510170007BEF23 /* NegotiationResponse.swift */,
+				5ABD6A5F2439AE6B00BFA93D /* ReconnectableConnection.swift */,
+				5ABD6A5E2439AE6B00BFA93D /* ReconnectPolicy.swift */,
+				7391A90D22510170007BEF23 /* ServerInvocationHandler.swift */,
 				7391A92122510170007BEF23 /* SignalRError.swift */,
+				7391A91422510170007BEF23 /* StreamHandle.swift */,
+				7391A91922510170007BEF23 /* TransferFormat.swift */,
+				7391A90722510170007BEF23 /* Transport.swift */,
+				7391A91322510170007BEF23 /* TransportDelegate.swift */,
+				7391A90C22510170007BEF23 /* TransportType.swift */,
+				7391A91B22510170007BEF23 /* Util.swift */,
+				7391A90822510170007BEF23 /* WebsocketsTransport.swift */,
 			);
 			path = SignalRClient;
+			sourceTree = "<group>";
+		};
+		E11151E828130CEE00AF31BC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E11151E928130CEE00AF31BC /* Logger+SignalRClient.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -425,6 +445,9 @@
 			dependencies = (
 			);
 			name = "iOS SignalRClient";
+			packageProductDependencies = (
+				E11151F028130D7500AF31BC /* Logging */,
+			);
 			productName = "iOS SignalRClient";
 			productReference = 5A406F3E2030F4960055671E /* SignalRClient.framework */;
 			productType = "com.apple.product-type.framework";
@@ -444,6 +467,9 @@
 			dependencies = (
 			);
 			name = "macOS SignalRClient";
+			packageProductDependencies = (
+				E11151E528130CCA00AF31BC /* Logging */,
+			);
 			productName = SignalRClient;
 			productReference = 5A9803521E5FE60E00BFFB0A /* SignalRClient.framework */;
 			productType = "com.apple.product-type.framework";
@@ -501,6 +527,8 @@
 				5AEC7102203111F900616DD2 /* PBXTargetDependency */,
 			);
 			name = HubSamplePhone;
+			packageProductDependencies = (
+			);
 			productName = HubSamplePhone;
 			productReference = 5AEC70ED20310E3E00616DD2 /* HubSamplePhone.app */;
 			productType = "com.apple.product-type.application";
@@ -551,6 +579,9 @@
 				Base,
 			);
 			mainGroup = 5A9803481E5FE60E00BFFB0A;
+			packageReferences = (
+				E11151E428130CCA00AF31BC /* XCRemoteSwiftPackageReference "swift-log" */,
+			);
 			productRefGroup = 5A9803531E5FE60E00BFFB0A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -619,10 +650,12 @@
 				5AF2A1E72803939200715C2E /* HubConnectionOptions.swift in Sources */,
 				7391A92722510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93922510170007BEF23 /* HttpResponse.swift in Sources */,
+				E11151EB28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */,
 				7391A92922510170007BEF23 /* Connection.swift in Sources */,
 				7391A93D22510170007BEF23 /* StreamHandle.swift in Sources */,
 				7391A95122510170007BEF23 /* HttpConnection.swift in Sources */,
 				5A13255722B0CCBC0082C783 /* HubConnectionExtensions.swift in Sources */,
+				E11151ED28130CEE00AF31BC /* Logger+SignalRClient.swift in Sources */,
 				7391A94122510170007BEF23 /* HubConnectionDelegate.swift in Sources */,
 				7391A95322510170007BEF23 /* ConnectionDelegate.swift in Sources */,
 				5ABD6A612439AE6B00BFA93D /* ReconnectPolicy.swift in Sources */,
@@ -639,7 +672,6 @@
 				7391A92322510170007BEF23 /* Transport.swift in Sources */,
 				7391A93322510170007BEF23 /* DefaultTransportFactory.swift in Sources */,
 				7391A95722510170007BEF23 /* SignalRError.swift in Sources */,
-				7391A93522510170007BEF23 /* Logger.swift in Sources */,
 				7391A94922510170007BEF23 /* HubProtocol.swift in Sources */,
 				7391A92522510170007BEF23 /* WebsocketsTransport.swift in Sources */,
 				7391A92B22510170007BEF23 /* HubConnection.swift in Sources */,
@@ -657,10 +689,12 @@
 				5AF2A1E62803939200715C2E /* HubConnectionOptions.swift in Sources */,
 				7391A92622510170007BEF23 /* HttpConnectionOptions.swift in Sources */,
 				7391A93822510170007BEF23 /* HttpResponse.swift in Sources */,
+				E11151EA28130CEE00AF31BC /* HubConnectionOptions.swift in Sources */,
 				7391A92822510170007BEF23 /* Connection.swift in Sources */,
 				7391A93C22510170007BEF23 /* StreamHandle.swift in Sources */,
 				7391A95022510170007BEF23 /* HttpConnection.swift in Sources */,
 				5A13255622B0CCBC0082C783 /* HubConnectionExtensions.swift in Sources */,
+				E11151EC28130CEE00AF31BC /* Logger+SignalRClient.swift in Sources */,
 				7391A94022510170007BEF23 /* HubConnectionDelegate.swift in Sources */,
 				7391A95222510170007BEF23 /* ConnectionDelegate.swift in Sources */,
 				5ABD6A602439AE6B00BFA93D /* ReconnectPolicy.swift in Sources */,
@@ -677,7 +711,6 @@
 				7391A92222510170007BEF23 /* Transport.swift in Sources */,
 				7391A93222510170007BEF23 /* DefaultTransportFactory.swift in Sources */,
 				7391A95622510170007BEF23 /* SignalRError.swift in Sources */,
-				7391A93422510170007BEF23 /* Logger.swift in Sources */,
 				7391A94822510170007BEF23 /* HubProtocol.swift in Sources */,
 				7391A92422510170007BEF23 /* WebsocketsTransport.swift in Sources */,
 				7391A92A22510170007BEF23 /* HubConnection.swift in Sources */,
@@ -784,7 +817,11 @@
 				INFOPLIST_FILE = SignalRClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "moozzyk.iOS-SignalRClient";
 				PRODUCT_NAME = SignalRClient;
 				SDKROOT = iphoneos;
@@ -811,7 +848,11 @@
 				INFOPLIST_FILE = SignalRClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "moozzyk.iOS-SignalRClient";
 				PRODUCT_NAME = SignalRClient;
 				SDKROOT = iphoneos;
@@ -934,7 +975,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -955,7 +997,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = SignalRClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.SignalRClient;
 				PRODUCT_NAME = SignalRClient;
@@ -980,7 +1026,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = SignalRClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.SignalRClient;
 				PRODUCT_NAME = SignalRClient;
@@ -998,7 +1048,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ConnectionSample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.ConnectionSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1014,7 +1067,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ConnectionSample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.ConnectionSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1030,7 +1086,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HubSample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.HubSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1046,7 +1105,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HubSample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.HubSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1067,7 +1129,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = HubSamplePhone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.HubSamplePhone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1090,7 +1155,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = HubSamplePhone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = moozzyk.HubSamplePhone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1158,6 +1226,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E11151E428130CCA00AF31BC /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-log";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E11151E528130CCA00AF31BC /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E11151E428130CCA00AF31BC /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
+		E11151F028130D7500AF31BC /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E11151E428130CCA00AF31BC /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5A9803491E5FE60E00BFFB0A /* Project object */;
 }

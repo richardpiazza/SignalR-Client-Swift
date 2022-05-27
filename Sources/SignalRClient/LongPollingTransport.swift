@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 public class LongPollingTransport: Transport {
     
@@ -28,7 +29,7 @@ public class LongPollingTransport: Transport {
     }
     
     public func start(url: URL, options: HttpConnectionOptions) {
-        logger.log(logLevel: .info, message: "Starting LongPolling transport")
+        logger.info("Starting LongPolling transport")
         httpClient = options.httpClientFactory(options)
         self.url = url
         opened = false
@@ -61,18 +62,18 @@ public class LongPollingTransport: Transport {
             if !closeCalled {
                 closeCalled = true
                 active = false
-                self.logger.log(logLevel: .debug, message: "Sending LongPolling session DELETE request...")
+                self.logger.debug("Sending LongPolling session DELETE request...")
                 self.httpClient?.delete(url: self.url!, completionHandler: { (_, errorOptional) in
                     if let error = errorOptional {
-                        self.logger.log(logLevel: .error, message: "Error while DELETE-ing long polling session: \(error)")
+                        self.logger.error("Error while DELETE-ing long polling session: \(error)")
                         self.delegate?.transportDidClose(error)
                     } else {
-                        self.logger.log(logLevel: .info, message: "LongPolling transport stopped.")
+                        self.logger.info("LongPolling transport stopped.")
                         self.delegate?.transportDidClose(self.closeError)
                     }
                 })
             } else {
-                self.logger.log(logLevel: .debug, message: "closeCalled flag is already set")
+                self.logger.debug("closeCalled flag is already set")
             }
         }
     }
@@ -80,10 +81,10 @@ public class LongPollingTransport: Transport {
     private func triggerPoll() {
         if self.active {
             let pollUrl = self.getPollUrl()
-            self.logger.log(logLevel: .debug, message: "Polling \(pollUrl)")
+            self.logger.debug("Polling \(pollUrl)")
             self.httpClient?.get(url: pollUrl, completionHandler: self.handlePollResponse(response:error:))
         } else {
-            self.logger.log(logLevel: .debug, message: "Long Polling transport polling complete.")
+            self.logger.debug("Long Polling transport polling complete.")
             self.close()
         }
     }
@@ -91,9 +92,9 @@ public class LongPollingTransport: Transport {
     private func handlePollResponse(response: HttpResponse?, error: Error?) {
         if let error = error {
             if (error as? URLError)?.errorCode == NSURLErrorTimedOut {
-                self.logger.log(logLevel: .debug, message: "Poll timed out (client side), reissuing.")
+                self.logger.debug("Poll timed out (client side), reissuing.")
             } else {
-                self.logger.log(logLevel: .error, message: "Error during polling: \(error)")
+                self.logger.error("Error during polling: \(error)")
                 self.closeError = error
                 self.active = false
             }
@@ -101,7 +102,7 @@ public class LongPollingTransport: Transport {
         } else if let response = response {
             switch response.statusCode {
             case 204:
-                self.logger.log(logLevel: .info, message: "LongPolling transport terminated by server.")
+                self.logger.info("LongPolling transport terminated by server.")
                 self.closeError = nil
                 self.active = false
                 
@@ -111,10 +112,10 @@ public class LongPollingTransport: Transport {
                     self.opened = true
                     self.delegate?.transportDidOpen()
                 } else if let data = response.contents, data.count > 0 {
-                    self.logger.log(logLevel: .debug, message: "Message received: \(data)")
+                    self.logger.debug("Message received: \(data)")
                     self.delegate?.transportDidReceiveData(data)
                 } else {
-                    self.logger.log(logLevel: .debug, message: "Poll timed out (server side), reissuing.")
+                    self.logger.debug("Poll timed out (server side), reissuing.")
                 }
                 
                 
@@ -126,7 +127,7 @@ public class LongPollingTransport: Transport {
                     fallthrough
                 }
             default:
-                self.logger.log(logLevel: .error, message: "Unexpected response code \(response.statusCode)")
+                self.logger.error("Unexpected response code \(response.statusCode)")
                 self.closeError = SignalRError.webError(statusCode: response.statusCode)
                 self.active = false
             }
